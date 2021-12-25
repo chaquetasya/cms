@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_money_prices",
+  "info": {
+    "displayName": "price",
+    "icon": "comment-dollar",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "currency": {
+      "type": "enumeration",
+      "enum": [
+        "COP",
+        "USD"
+      ],
+      "default": "COP",
+      "required": true
+    },
+    "value": {
+      "type": "float",
+      "required": true,
+      "min": 0,
+      "default": 0
+    },
+    "min": {
+      "type": "integer",
+      "required": true,
+      "unique": false,
+      "min": 1,
+      "default": 1
+    }
+  }
+}

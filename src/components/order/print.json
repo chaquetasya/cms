@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_order_prints",
+  "info": {
+    "displayName": "print",
+    "icon": "paint-roller"
+  },
+  "options": {},
+  "attributes": {
+    "upperRight": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": false
+    },
+    "upperLeft": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "upperBack": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}

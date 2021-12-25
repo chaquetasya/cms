@@ -1,0 +1,46 @@
+{
+  "collectionName": "components_order_shippings",
+  "info": {
+    "displayName": "shipping",
+    "icon": "box-open",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "firstname": {
+      "type": "string",
+      "required": true
+    },
+    "lastname": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "phone": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string",
+      "required": true,
+      "default": "Colombia"
+    },
+    "city": {
+      "type": "string",
+      "required": true,
+      "default": "Bogotá"
+    },
+    "address": {
+      "type": "string",
+      "required": true
+    },
+    "ZIP": {
+      "type": "string"
+    },
+    "note": {
+      "type": "text"
+    }
+  }
+}

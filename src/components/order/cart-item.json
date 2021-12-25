@@ -1,0 +1,44 @@
+{
+  "collectionName": "components_order_cart_items",
+  "info": {
+    "displayName": "cartItem",
+    "icon": "dice-d6",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "sku": {
+      "type": "string",
+      "required": true,
+      "default": "CQY-"
+    },
+    "price": {
+      "type": "float",
+      "required": true,
+      "default": 0,
+      "min": 0
+    },
+    "subtotal": {
+      "type": "float",
+      "required": true,
+      "default": 0,
+      "min": 0
+    },
+    "total": {
+      "type": "float",
+      "required": true,
+      "default": 0,
+      "min": 0
+    },
+    "quantity": {
+      "type": "integer",
+      "required": true,
+      "min": 1,
+      "default": 1
+    },
+    "metadata": {
+      "type": "json",
+      "private": true
+    }
+  }
+}

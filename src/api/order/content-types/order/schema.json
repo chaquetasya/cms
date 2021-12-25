@@ -1,0 +1,84 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Order",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "collector": {
+      "type": "enumeration",
+      "enum": [
+        "MERCADOPAGO",
+        "OTHER"
+      ],
+      "default": "MERCADOPAGO",
+      "required": true
+    },
+    "preference": {
+      "type": "uid"
+    },
+    "design": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::design.design"
+    },
+    "print": {
+      "displayName": "print",
+      "type": "component",
+      "repeatable": false,
+      "component": "order.print",
+      "required": true
+    },
+    "shipping": {
+      "type": "component",
+      "repeatable": false,
+      "component": "order.shipping",
+      "required": true
+    },
+    "cart": {
+      "type": "component",
+      "repeatable": true,
+      "component": "order.cart-item",
+      "min": 1,
+      "required": true
+    },
+    "currency": {
+      "type": "enumeration",
+      "enum": [
+        "COP",
+        "USD"
+      ],
+      "default": "COP",
+      "required": true
+    },
+    "total": {
+      "type": "float",
+      "min": 0,
+      "required": true,
+      "default": 0
+    },
+    "metadata": {
+      "type": "json",
+      "private": true
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "PENDING",
+        "CONFIRMED",
+        "DELIVERY",
+        "COMPLETED",
+        "CANCELED"
+      ],
+      "default": "PENDING",
+      "required": true
+    }
+  }
+}
