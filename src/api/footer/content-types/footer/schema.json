@@ -16,6 +16,19 @@
     }
   },
   "attributes": {
+    "logo": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": true
+    },
     "email": {
       "pluginOptions": {
         "i18n": {
@@ -34,6 +47,15 @@
       "type": "string",
       "required": true
     },
+    "legal": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "richtext",
+      "required": true
+    },
     "links": {
       "type": "component",
       "repeatable": true,
@@ -42,7 +64,7 @@
           "localized": true
         }
       },
-      "component": "footer.footer-link"
+      "component": "basics.footer-link"
     }
   }
 }
