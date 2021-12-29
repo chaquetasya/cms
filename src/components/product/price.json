@@ -24,10 +24,15 @@
     },
     "min": {
       "type": "integer",
+      "default": 0,
       "required": true,
-      "unique": false,
-      "min": 1,
-      "default": 1
+      "min": 0
+    },
+    "max": {
+      "type": "integer",
+      "required": false,
+      "default": 1,
+      "min": 1
     }
   }
 }

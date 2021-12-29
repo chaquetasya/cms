@@ -1982,6 +1982,9 @@
                                                                             },
                                                                             "min": {
                                                                               "type": "integer"
+                                                                            },
+                                                                            "max": {
+                                                                              "type": "integer"
                                                                             }
                                                                           }
                                                                         }
@@ -4707,6 +4710,9 @@
                                                                           },
                                                                           "min": {
                                                                             "type": "integer"
+                                                                          },
+                                                                          "max": {
+                                                                            "type": "integer"
                                                                           }
                                                                         }
                                                                       }
@@ -7372,6 +7378,9 @@
                                                                           },
                                                                           "min": {
                                                                             "type": "integer"
+                                                                          },
+                                                                          "max": {
+                                                                            "type": "integer"
                                                                           }
                                                                         }
                                                                       }
@@ -10005,6 +10014,9 @@
                                                                             "format": "float"
                                                                           },
                                                                           "min": {
+                                                                            "type": "integer"
+                                                                          },
+                                                                          "max": {
                                                                             "type": "integer"
                                                                           }
                                                                         }
