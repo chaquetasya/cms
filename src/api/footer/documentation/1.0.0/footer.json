@@ -389,17 +389,10 @@
                                   }
                                 }
                               },
-                              "email": {
-                                "type": "string",
-                                "format": "email"
-                              },
-                              "phone": {
-                                "type": "string"
-                              },
                               "legal": {
                                 "type": "string"
                               },
-                              "links": {
+                              "navigationLinks": {
                                 "type": "array",
                                 "items": {
                                   "type": "object",
@@ -411,6 +404,29 @@
                                       "type": "string"
                                     },
                                     "url": {
+                                      "type": "string"
+                                    },
+                                    "icon": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "contactLinks": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "url": {
+                                      "type": "string"
+                                    },
+                                    "icon": {
                                       "type": "string"
                                     }
                                   }
@@ -1093,17 +1109,10 @@
                                                 }
                                               }
                                             },
-                                            "email": {
-                                              "type": "string",
-                                              "format": "email"
-                                            },
-                                            "phone": {
-                                              "type": "string"
-                                            },
                                             "legal": {
                                               "type": "string"
                                             },
-                                            "links": {
+                                            "navigationLinks": {
                                               "type": "array",
                                               "items": {
                                                 "type": "object",
@@ -1115,6 +1124,29 @@
                                                     "type": "string"
                                                   },
                                                   "url": {
+                                                    "type": "string"
+                                                  },
+                                                  "icon": {
+                                                    "type": "string"
+                                                  }
+                                                }
+                                              }
+                                            },
+                                            "contactLinks": {
+                                              "type": "array",
+                                              "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "id": {
+                                                    "type": "string"
+                                                  },
+                                                  "name": {
+                                                    "type": "string"
+                                                  },
+                                                  "url": {
+                                                    "type": "string"
+                                                  },
+                                                  "icon": {
                                                     "type": "string"
                                                   }
                                                 }
@@ -1847,17 +1879,10 @@
                                 }
                               }
                             },
-                            "email": {
-                              "type": "string",
-                              "format": "email"
-                            },
-                            "phone": {
-                              "type": "string"
-                            },
                             "legal": {
                               "type": "string"
                             },
-                            "links": {
+                            "navigationLinks": {
                               "type": "array",
                               "items": {
                                 "type": "object",
@@ -1869,6 +1894,29 @@
                                     "type": "string"
                                   },
                                   "url": {
+                                    "type": "string"
+                                  },
+                                  "icon": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "contactLinks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "url": {
+                                    "type": "string"
+                                  },
+                                  "icon": {
                                     "type": "string"
                                   }
                                 }
@@ -2551,17 +2599,10 @@
                                               }
                                             }
                                           },
-                                          "email": {
-                                            "type": "string",
-                                            "format": "email"
-                                          },
-                                          "phone": {
-                                            "type": "string"
-                                          },
                                           "legal": {
                                             "type": "string"
                                           },
-                                          "links": {
+                                          "navigationLinks": {
                                             "type": "array",
                                             "items": {
                                               "type": "object",
@@ -2573,6 +2614,29 @@
                                                   "type": "string"
                                                 },
                                                 "url": {
+                                                  "type": "string"
+                                                },
+                                                "icon": {
+                                                  "type": "string"
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "contactLinks": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                },
+                                                "name": {
+                                                  "type": "string"
+                                                },
+                                                "url": {
+                                                  "type": "string"
+                                                },
+                                                "icon": {
                                                   "type": "string"
                                                 }
                                               }
@@ -2835,17 +2899,10 @@
                         ],
                         "example": "string or id"
                       },
-                      "email": {
-                        "type": "string",
-                        "format": "email"
-                      },
-                      "phone": {
-                        "type": "string"
-                      },
                       "legal": {
                         "type": "string"
                       },
-                      "links": {
+                      "navigationLinks": {
                         "type": "array",
                         "items": {
                           "type": "object",
@@ -2854,6 +2911,26 @@
                               "type": "string"
                             },
                             "url": {
+                              "type": "string"
+                            },
+                            "icon": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "contactLinks": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            },
+                            "url": {
+                              "type": "string"
+                            },
+                            "icon": {
                               "type": "string"
                             }
                           }
@@ -3466,17 +3543,10 @@
                                 }
                               }
                             },
-                            "email": {
-                              "type": "string",
-                              "format": "email"
-                            },
-                            "phone": {
-                              "type": "string"
-                            },
                             "legal": {
                               "type": "string"
                             },
-                            "links": {
+                            "navigationLinks": {
                               "type": "array",
                               "items": {
                                 "type": "object",
@@ -3488,6 +3558,29 @@
                                     "type": "string"
                                   },
                                   "url": {
+                                    "type": "string"
+                                  },
+                                  "icon": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "contactLinks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "url": {
+                                    "type": "string"
+                                  },
+                                  "icon": {
                                     "type": "string"
                                   }
                                 }
@@ -4170,17 +4263,10 @@
                                               }
                                             }
                                           },
-                                          "email": {
-                                            "type": "string",
-                                            "format": "email"
-                                          },
-                                          "phone": {
-                                            "type": "string"
-                                          },
                                           "legal": {
                                             "type": "string"
                                           },
-                                          "links": {
+                                          "navigationLinks": {
                                             "type": "array",
                                             "items": {
                                               "type": "object",
@@ -4192,6 +4278,29 @@
                                                   "type": "string"
                                                 },
                                                 "url": {
+                                                  "type": "string"
+                                                },
+                                                "icon": {
+                                                  "type": "string"
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "contactLinks": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                },
+                                                "name": {
+                                                  "type": "string"
+                                                },
+                                                "url": {
+                                                  "type": "string"
+                                                },
+                                                "icon": {
                                                   "type": "string"
                                                 }
                                               }
@@ -4453,13 +4562,6 @@
                           }
                         ],
                         "example": "string or id"
-                      },
-                      "email": {
-                        "type": "string",
-                        "format": "email"
-                      },
-                      "phone": {
-                        "type": "string"
                       },
                       "legal": {
                         "type": "string"
