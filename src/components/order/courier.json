@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_order_couriers",
+  "info": {
+    "displayName": "courier",
+    "icon": "dolly"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "reference": {
+      "type": "string"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "EXTERNAL",
+        "INTERNAL"
+      ],
+      "required": true,
+      "default": "EXTERNAL"
+    },
+    "note": {
+      "type": "text"
+    }
+  }
+}

@@ -79,6 +79,23 @@
       ],
       "default": "PENDING",
       "required": true
+    },
+    "note": {
+      "type": "text",
+      "private": true
+    },
+    "invoice": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "courier": {
+      "type": "component",
+      "repeatable": false,
+      "component": "order.courier"
     }
   }
 }
