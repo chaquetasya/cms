@@ -1,32 +1,36 @@
 {
-  "name": "chaquetasya",
-  "private": true,
-  "version": "0.1.0",
-  "description": "A Strapi application",
-  "scripts": {
-    "dev": "strapi develop",
-    "start": "strapi start",
-    "build": "strapi build",
-    "strapi": "strapi"
-  },
-  "dependencies": {
-    "@strapi/plugin-documentation": "4.0.0",
-    "@strapi/plugin-graphql": "4.0.0",
-    "@strapi/plugin-i18n": "4.0.0",
-    "@strapi/plugin-users-permissions": "4.0.0",
-    "@strapi/strapi": "4.0.0",
-    "mysql": "^2.18.1",
-    "sqlite3": "5.0.2"
-  },
-  "author": {
-    "name": "A Strapi developer"
-  },
-  "strapi": {
-    "uuid": "7d8dd454-cdc5-4f2c-b2ce-6c79f9e124b8"
-  },
-  "engines": {
-    "node": ">=12.x.x <=16.x.x",
-    "npm": ">=6.0.0"
-  },
-  "license": "MIT"
+    "name": "chaquetasya",
+    "private": true,
+    "version": "0.1.0",
+    "description": "A Strapi application",
+    "scripts": {
+        "dev": "strapi develop",
+        "start": "strapi start",
+        "build": "strapi build",
+        "strapi": "strapi"
+    },
+    "dependencies": {
+        "@strapi/plugin-documentation": "4.0.4",
+        "@strapi/plugin-graphql": "4.0.4",
+        "@strapi/plugin-i18n": "4.0.4",
+        "@strapi/plugin-users-permissions": "4.0.4",
+        "@strapi/strapi": "4.0.4",
+        "mysql": "^2.18.1",
+        "sqlite3": "5.0.2"
+    },
+    "author": {
+        "name": "A Strapi developer"
+    },
+    "strapi": {
+        "uuid": "7d8dd454-cdc5-4f2c-b2ce-6c79f9e124b8"
+    },
+    "engines": {
+        "node": ">=12.x.x <=16.x.x",
+        "npm": ">=6.0.0"
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "prettier": "^2.5.1",
+        "typescript": "^4.5.4"
+    }
 }
