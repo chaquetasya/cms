@@ -8,5 +8,14 @@ module.exports = {
                 auth: false,
             },
         },
+
+        {
+            method: "POST",
+            path: "/cart",
+            handler: "cart.createOrder",
+            config: {
+                auth: false,
+            },
+        },
     ],
 };

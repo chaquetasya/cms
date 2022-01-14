@@ -36,7 +36,7 @@
       "type": "string",
       "required": true
     },
-    "ZIP": {
+    "zip": {
       "type": "string"
     },
     "note": {

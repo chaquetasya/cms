@@ -1,90 +1,157 @@
 "use strict";
 
-/**
- * A set of functions called "actions" for `cart`
- */
+const Joi = require("joi");
 
-/**
- *
- * @param {{
- *  designID: string,
- *  print: any,
- *  products: Array<{ sku: string; quantity: number; }>
- * }} item Cart item
- */
-async function createResumeByItem(item) {
-    const skus = item.products.map(product => product.sku);
-
-    const products = await strapi.entityService.findMany(
-        "api::product.product",
-        {
-            populate: "prices",
-            filters: {
-                sku: {
-                    $in: skus,
-                },
-            },
-        }
+const productsSchema = Joi.array()
+    .min(1)
+    .items(
+        Joi.object({
+            sku: Joi.string().required(),
+            quantity: Joi.number().min(1).required(),
+        })
     );
 
-    if (products.length !== item.products.length) {
-        throw new Error("Product not found");
-    }
-
-    const prices = products.map(product => {
-        const selected = item.products.find(i => i.sku === product.sku);
-
-        const price = product.prices.find(price => {
-            const min = selected.quantity >= price.min;
-            const max = price.max ? selected.quantity <= price.max : true;
-
-            return min && max && price.currency === "COP";
-        });
-
-        const subtotal = price ? selected.quantity * price.value : null;
-
-        return {
-            sku: product.sku,
-            quantity: selected.quantity,
-            stock: product.stock,
-            subtotal: subtotal,
-        };
-    });
-
-    const total = prices.reduce((acc, item) => acc + item.subtotal, 0);
-
-    return {
-        currency: "COP",
-        total: total,
-        products: prices,
-    };
-}
-
 module.exports = {
-    // exampleAction: async (ctx, next) => {
-    //   try {
-    //     ctx.body = 'ok';
-    //   } catch (err) {
-    //     ctx.body = err;
-    //   }
-    // }
-
     calculateTotal: async (ctx, next) => {
         try {
-            const list = [];
             const items = ctx.request.body;
 
-            if (Array.isArray(items)) {
-                for (const item of items) {
-                    const value = await createResumeByItem(item);
-                    list.push(value);
-                }
+            const schema = Joi.array()
+                .min(1)
+                .items(
+                    Joi.object({
+                        designID: Joi.number().required(),
+                        products: productsSchema,
+                    })
+                );
+
+            const schemaErrors = schema.validate(items).error;
+
+            if (!schemaErrors) {
+                const createResumeByItem =
+                    strapi.service("api::product.cart").createResumeByItem;
+
+                const responses = await Promise.all(
+                    items.map(createResumeByItem)
+                );
+
+                ctx.body = responses;
+                return;
             }
 
-            ctx.body = list;
+            ctx.status = 400;
+            ctx.body = {
+                message: "INVALID_REQUEST",
+                error: true,
+            };
         } catch (err) {
             console.error(err);
             ctx.body = err;
+        }
+    },
+
+    createOrder: async (ctx, next) => {
+        try {
+            const body = ctx.request.body;
+
+            const schema = Joi.object({
+                shipping: Joi.object({
+                    firstname: Joi.string().required(),
+                    lastname: Joi.string().required(),
+                    email: Joi.string().email().required(),
+                    phone: Joi.string(),
+                    country: Joi.string().required(),
+                    city: Joi.string().required(),
+                    address: Joi.string().required(),
+                    zip: Joi.string(),
+                    note: Joi.string(),
+                }),
+
+                cart: Joi.array()
+                    .min(1)
+                    .items(
+                        Joi.object({
+                            designID: Joi.number().required(),
+
+                            prints: {
+                                upperLeftID: Joi.number(),
+                                upperRightID: Joi.number(),
+                                upperBackID: Joi.number(),
+                            },
+
+                            products: productsSchema,
+                        })
+                    ),
+            });
+
+            const schemaErrors = schema.validate(body).error;
+
+            if (!schemaErrors) {
+                const service = strapi.service("api::product.cart");
+                const cart = [];
+
+                for (const item of body.cart) {
+                    const resume = await service.createResumeByItem(item);
+
+                    if (!resume.subtotal || isNaN(resume.subtotal)) {
+                        throw Error("INVALID_RESUME");
+                    }
+
+                    cart.push({
+                        design: resume.designID,
+                        prints: item.prints,
+                        products: resume.products,
+                    });
+                }
+
+                const order = {
+                    currency: "COP",
+                    collector: "MERCADOPAGO",
+                    shipping: body.shipping,
+                    cart: cart,
+                };
+
+                // PAYMENT
+
+                order.preference = await service.createPreference(order);
+
+                // CREATE ORDER
+
+                const doc = await service.createOrder(order);
+
+                if (!doc) {
+                    ctx.body = {
+                        message: "ORDER_NOT_CREATED",
+                        error: true,
+                    };
+
+                    return;
+                }
+
+                ctx.body = {
+                    message: "ORDER_CREATED",
+                    payload: {
+                        orderID: doc.id,
+                        preferenceID: doc.preference,
+                        paymentURL: doc.paymentURL,
+                    },
+                };
+
+                return;
+            }
+
+            ctx.status = 400;
+            ctx.body = {
+                message: "INVALID_REQUEST",
+                error: true,
+            };
+        } catch (err) {
+            console.error(err);
+
+            ctx.body = {
+                message: err.message,
+                error: true,
+            };
         }
     },
 };

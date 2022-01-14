@@ -1919,6 +1919,9 @@
                                                 }
                                               }
                                             },
+                                            "title": {
+                                              "type": "string"
+                                            },
                                             "createdAt": {
                                               "type": "string",
                                               "format": "date-time"
@@ -4192,6 +4195,9 @@
                                               }
                                             }
                                           },
+                                          "title": {
+                                            "type": "string"
+                                          },
                                           "createdAt": {
                                             "type": "string",
                                             "format": "date-time"
@@ -6417,6 +6423,9 @@
                                               }
                                             }
                                           },
+                                          "title": {
+                                            "type": "string"
+                                          },
                                           "createdAt": {
                                             "type": "string",
                                             "format": "date-time"
@@ -8598,6 +8607,9 @@
                                                 }
                                               }
                                             }
+                                          },
+                                          "title": {
+                                            "type": "string"
                                           },
                                           "createdAt": {
                                             "type": "string",

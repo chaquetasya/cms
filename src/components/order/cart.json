@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_order_carts",
+  "info": {
+    "displayName": "cart",
+    "icon": "cash-register",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "design": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::design.design"
+    },
+    "prints": {
+      "type": "component",
+      "repeatable": false,
+      "component": "order.print",
+      "required": true
+    },
+    "products": {
+      "type": "component",
+      "repeatable": true,
+      "component": "order.cart-item",
+      "required": true,
+      "min": 1
+    }
+  }
+}

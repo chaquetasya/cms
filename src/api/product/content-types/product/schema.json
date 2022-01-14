@@ -45,6 +45,10 @@
       "relation": "manyToOne",
       "target": "api::design.design",
       "inversedBy": "products"
+    },
+    "title": {
+      "type": "string",
+      "required": true
     }
   }
 }

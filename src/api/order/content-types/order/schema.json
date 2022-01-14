@@ -24,29 +24,10 @@
     "preference": {
       "type": "uid"
     },
-    "design": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::design.design"
-    },
-    "print": {
-      "displayName": "print",
-      "type": "component",
-      "repeatable": false,
-      "component": "order.print",
-      "required": true
-    },
     "shipping": {
       "type": "component",
       "repeatable": false,
       "component": "order.shipping",
-      "required": true
-    },
-    "cart": {
-      "type": "component",
-      "repeatable": true,
-      "component": "order.cart-item",
-      "min": 1,
       "required": true
     },
     "currency": {
@@ -96,6 +77,18 @@
       "type": "component",
       "repeatable": false,
       "component": "order.courier"
+    },
+    "cart": {
+      "displayName": "cart",
+      "type": "component",
+      "repeatable": true,
+      "component": "order.cart",
+      "required": true,
+      "min": 1
+    },
+    "paymentURL": {
+      "type": "text",
+      "required": false
     }
   }
 }
