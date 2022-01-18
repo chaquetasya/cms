@@ -26,6 +26,9 @@
                                   "OTHER"
                                 ]
                               },
+                              "paymentURL": {
+                                "type": "string"
+                              },
                               "preference": {
                                 "type": "string"
                               },
@@ -1638,6 +1641,9 @@
                                                     }
                                                   }
                                                 },
+                                                "material": {
+                                                  "type": "string"
+                                                },
                                                 "createdAt": {
                                                   "type": "string",
                                                   "format": "date-time"
@@ -2851,7 +2857,11 @@
                                   }
                                 }
                               },
-                              "paymentURL": {
+                              "paidAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "paymentID": {
                                 "type": "string"
                               },
                               "createdAt": {
@@ -3184,6 +3194,9 @@
                                 "MERCADOPAGO",
                                 "OTHER"
                               ]
+                            },
+                            "paymentURL": {
+                              "type": "string"
                             },
                             "preference": {
                               "type": "string"
@@ -4797,6 +4810,9 @@
                                                   }
                                                 }
                                               },
+                                              "material": {
+                                                "type": "string"
+                                              },
                                               "createdAt": {
                                                 "type": "string",
                                                 "format": "date-time"
@@ -6010,7 +6026,11 @@
                                 }
                               }
                             },
-                            "paymentURL": {
+                            "paidAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "paymentID": {
                               "type": "string"
                             },
                             "createdAt": {
@@ -6412,6 +6432,9 @@
                                 "OTHER"
                               ]
                             },
+                            "paymentURL": {
+                              "type": "string"
+                            },
                             "preference": {
                               "type": "string"
                             },
@@ -8024,6 +8047,9 @@
                                                   }
                                                 }
                                               },
+                                              "material": {
+                                                "type": "string"
+                                              },
                                               "createdAt": {
                                                 "type": "string",
                                                 "format": "date-time"
@@ -9237,7 +9263,11 @@
                                 }
                               }
                             },
-                            "paymentURL": {
+                            "paidAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "paymentID": {
                               "type": "string"
                             },
                             "createdAt": {
@@ -9480,6 +9510,9 @@
                                 "OTHER"
                               ]
                             },
+                            "paymentURL": {
+                              "type": "string"
+                            },
                             "preference": {
                               "type": "string"
                             },
@@ -11092,6 +11125,9 @@
                                                   }
                                                 }
                                               },
+                                              "material": {
+                                                "type": "string"
+                                              },
                                               "createdAt": {
                                                 "type": "string",
                                                 "format": "date-time"
@@ -12305,7 +12341,11 @@
                                 }
                               }
                             },
-                            "paymentURL": {
+                            "paidAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "paymentID": {
                               "type": "string"
                             },
                             "createdAt": {
@@ -12539,6 +12579,9 @@
                           "OTHER"
                         ]
                       },
+                      "paymentURL": {
+                        "type": "string"
+                      },
                       "preference": {
                         "type": "string"
                       },
@@ -12724,7 +12767,11 @@
                           }
                         }
                       },
-                      "paymentURL": {
+                      "paidAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "paymentID": {
                         "type": "string"
                       },
                       "createdAt": {

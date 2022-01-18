@@ -50,6 +50,9 @@
       "relation": "oneToMany",
       "target": "api::product.product",
       "mappedBy": "design"
+    },
+    "material": {
+      "type": "string"
     }
   }
 }

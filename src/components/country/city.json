@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_country_cities",
+  "info": {
+    "displayName": "city",
+    "icon": "globe-americas"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    }
+  }
+}

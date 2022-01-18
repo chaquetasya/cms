@@ -1,6 +1,7 @@
 "use strict";
 
 const axios = require("axios");
+const _ = require("lodash");
 
 /**
  * cart service.
@@ -148,29 +149,34 @@ module.exports = {
      * }} data Order data to record
      * */
     async createOrder(data) {
-        const cart = data.cart.map(item => {
-            let total = 0;
+        let total = 0;
 
-            item.products = item.products.map(product => {
-                const copy = { ...product };
+        const cart = _.map(data.cart, i => {
+            let subtotal = 0;
 
-                delete copy.id;
-
-                total += product.total;
-
-                return {
-                    ...copy,
-                    product: product.id,
+            const products = _.map(i.products, p => {
+                const item = {
+                    ...p,
+                    product: p.id,
                 };
+
+                subtotal += item.total;
+                delete item.id;
+
+                return item;
             });
 
+            const prints = _.mapKeys(i.prints, (_, key) => key.split("ID")[0]);
+
+            total += subtotal;
+
             return {
-                ...item,
-                total: total,
+                ...i,
+                products,
+                prints,
+                total: subtotal,
             };
         });
-
-        const total = cart.reduce((acc, it) => acc + it.total, 0);
 
         const order = await strapi.entityService.create("api::order.order", {
             data: {

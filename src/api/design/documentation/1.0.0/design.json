@@ -1620,6 +1620,9 @@
                                                             }
                                                           }
                                                         },
+                                                        "material": {
+                                                          "type": "string"
+                                                        },
                                                         "createdAt": {
                                                           "type": "string",
                                                           "format": "date-time"
@@ -1970,6 +1973,9 @@
                                     }
                                   }
                                 }
+                              },
+                              "material": {
+                                "type": "string"
                               },
                               "createdAt": {
                                 "type": "string",
@@ -3896,6 +3902,9 @@
                                                           }
                                                         }
                                                       },
+                                                      "material": {
+                                                        "type": "string"
+                                                      },
                                                       "createdAt": {
                                                         "type": "string",
                                                         "format": "date-time"
@@ -4246,6 +4255,9 @@
                                   }
                                 }
                               }
+                            },
+                            "material": {
+                              "type": "string"
                             },
                             "createdAt": {
                               "type": "string",
@@ -6124,6 +6136,9 @@
                                                           }
                                                         }
                                                       },
+                                                      "material": {
+                                                        "type": "string"
+                                                      },
                                                       "createdAt": {
                                                         "type": "string",
                                                         "format": "date-time"
@@ -6474,6 +6489,9 @@
                                   }
                                 }
                               }
+                            },
+                            "material": {
+                              "type": "string"
                             },
                             "createdAt": {
                               "type": "string",
@@ -8309,6 +8327,9 @@
                                                           }
                                                         }
                                                       },
+                                                      "material": {
+                                                        "type": "string"
+                                                      },
                                                       "createdAt": {
                                                         "type": "string",
                                                         "format": "date-time"
@@ -8660,6 +8681,9 @@
                                 }
                               }
                             },
+                            "material": {
+                              "type": "string"
+                            },
                             "createdAt": {
                               "type": "string",
                               "format": "date-time"
@@ -8934,6 +8958,9 @@
                           ],
                           "example": "string or id"
                         }
+                      },
+                      "material": {
+                        "type": "string"
                       },
                       "createdAt": {
                         "type": "string",

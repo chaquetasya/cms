@@ -63,8 +63,8 @@ module.exports = {
                     country: Joi.string().required(),
                     city: Joi.string().required(),
                     address: Joi.string().required(),
-                    zip: Joi.string(),
-                    note: Joi.string(),
+                    zip: Joi.string().allow(""),
+                    note: Joi.string().allow(""),
                 }),
 
                 cart: Joi.array()
@@ -85,6 +85,8 @@ module.exports = {
             });
 
             const schemaErrors = schema.validate(body).error;
+
+            console.log(schemaErrors);
 
             if (!schemaErrors) {
                 const service = strapi.service("api::product.cart");
