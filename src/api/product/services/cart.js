@@ -12,18 +12,22 @@ module.exports = {
      *
      * @param {{
      *  designID: string | number,
+     *  currency: "COP",
      *  products: Array<{
      *      sku: string;
      *      quantity: number;
      *  }>,
-     * }} item Cart item
+     * }} data Cart item
      */
-    async createResumeByItem(item) {
+    async createResumeByItem(data) {
         // DESIGN
 
         const design = await strapi.entityService.findOne(
             "api::design.design",
-            item.designID
+            data.designID,
+            {
+                populate: "backwards, forwards",
+            }
         );
 
         if (!design) {
@@ -35,14 +39,14 @@ module.exports = {
 
         // PRODUCTS
 
-        const skus = item.products.map(product => product.sku);
+        const skus = data.products.map(product => product.sku);
 
         const products = await strapi.entityService.findMany(
             "api::product.product",
             {
                 populate: "*",
                 filters: {
-                    design: item.designID,
+                    design: data.designID,
                     sku: {
                         $in: skus,
                     },
@@ -50,7 +54,7 @@ module.exports = {
             }
         );
 
-        if (products.length !== item.products.length) {
+        if (products.length !== data.products.length) {
             return {
                 message: "PRODUCTS_NOT_FOUND",
                 error: true,
@@ -59,14 +63,14 @@ module.exports = {
 
         // PRICES
 
-        const prices = products.map(product => {
-            const selected = item.products.find(i => i.sku === product.sku);
+        const offers = products.map(product => {
+            const selected = data.products.find(i => i.sku === product.sku);
 
             const price = product.prices.find(price => {
                 const min = selected.quantity >= price.min;
                 const max = price.max ? selected.quantity <= price.max : true;
 
-                return min && max && price.currency === "COP";
+                return min && max && price.currency === data.currency;
             });
 
             const subtotal = price ? selected.quantity * price.value : null;
@@ -83,6 +87,7 @@ module.exports = {
                 id: product.id,
                 sku: product.sku,
                 title: product.title,
+                size: product.size,
                 quantity: selected.quantity,
                 currency: price.currency,
                 stock: product.stock,
@@ -92,13 +97,18 @@ module.exports = {
             };
         });
 
-        const subtotal = prices.reduce((acc, item) => acc + item.subtotal, 0);
+        let total = 0;
+
+        for (const price of offers) {
+            total += price.total;
+        }
 
         return {
-            designID: design.id,
-            currency: "COP",
-            products: prices,
-            subtotal: subtotal,
+            id: data.id,
+            design: design,
+            currency: data.currency,
+            products: offers,
+            total: total,
         };
     },
 

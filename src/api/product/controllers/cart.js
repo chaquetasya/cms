@@ -2,6 +2,8 @@
 
 const Joi = require("joi");
 
+const currencySchema = Joi.string().valid("COP", "USD");
+
 const productsSchema = Joi.array()
     .min(1)
     .items(
@@ -14,34 +16,57 @@ const productsSchema = Joi.array()
 module.exports = {
     calculateTotal: async (ctx, next) => {
         try {
-            const items = ctx.request.body;
+            const body = ctx.request.body;
 
-            const schema = Joi.array()
-                .min(1)
-                .items(
-                    Joi.object({
-                        designID: Joi.number().required(),
-                        products: productsSchema,
-                    })
-                );
+            const schema = Joi.object({
+                currency: currencySchema.required(),
+                items: Joi.array()
+                    .min(1)
+                    .items(
+                        Joi.object().keys({
+                            id: Joi.string().required(),
+                            designID: Joi.number().required(),
+                            products: productsSchema,
+                        })
+                    ),
+            });
 
-            const schemaErrors = schema.validate(items).error;
+            const schemaErrors = schema.validate(body).error;
+
+            console.log(schemaErrors);
 
             if (!schemaErrors) {
-                const createResumeByItem =
-                    strapi.service("api::product.cart").createResumeByItem;
+                const service = strapi.service("api::product.cart");
+                const items = [];
 
-                const responses = await Promise.all(
-                    items.map(createResumeByItem)
-                );
+                let total = 0;
 
-                ctx.body = responses;
+                for (const item of body.items) {
+                    const resume = await service.createResumeByItem({
+                        ...item,
+                        currency: body.currency,
+                    });
+
+                    if (!resume.error) {
+                        total += resume.total;
+                    }
+
+                    items.push(resume);
+                }
+
+                ctx.body = {
+                    currency: body.currency,
+                    items: items,
+                    total: total,
+                };
+
                 return;
             }
 
             ctx.status = 400;
             ctx.body = {
                 message: "INVALID_REQUEST",
+                payload: schemaErrors,
                 error: true,
             };
         } catch (err) {
@@ -55,6 +80,8 @@ module.exports = {
             const body = ctx.request.body;
 
             const schema = Joi.object({
+                currency: currencySchema.required(),
+
                 shipping: Joi.object({
                     firstname: Joi.string().required(),
                     lastname: Joi.string().required(),
@@ -86,14 +113,15 @@ module.exports = {
 
             const schemaErrors = schema.validate(body).error;
 
-            console.log(schemaErrors);
-
             if (!schemaErrors) {
                 const service = strapi.service("api::product.cart");
                 const cart = [];
 
                 for (const item of body.cart) {
-                    const resume = await service.createResumeByItem(item);
+                    const resume = await service.createResumeByItem({
+                        currency: body.currency,
+                        ...item,
+                    });
 
                     if (!resume.subtotal || isNaN(resume.subtotal)) {
                         throw Error("INVALID_RESUME");
@@ -136,6 +164,7 @@ module.exports = {
                         orderID: doc.id,
                         preferenceID: doc.preference,
                         paymentURL: doc.paymentURL,
+                        total: doc.total,
                     },
                 };
 
@@ -145,6 +174,7 @@ module.exports = {
             ctx.status = 400;
             ctx.body = {
                 message: "INVALID_REQUEST",
+                payload: schemaErrors,
                 error: true,
             };
         } catch (err) {
