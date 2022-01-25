@@ -20,26 +20,30 @@ module.exports = {
 
             const schema = Joi.object({
                 currency: currencySchema.required(),
-                items: Joi.array()
-                    .min(1)
-                    .items(
-                        Joi.object().keys({
-                            id: Joi.string().required(),
-                            designID: Joi.number().required(),
-                            products: productsSchema,
-                        })
-                    ),
+                items: Joi.array().items(
+                    Joi.object({
+                        id: Joi.string().required(),
+                        designID: Joi.number().required(),
+                        products: productsSchema,
+                    })
+                ),
             });
 
             const schemaErrors = schema.validate(body).error;
 
-            console.log(schemaErrors);
-
             if (!schemaErrors) {
                 const service = strapi.service("api::product.cart");
+                const hasStock = await service.validateStock(body.items);
                 const items = [];
 
                 let total = 0;
+
+                if (!hasStock) {
+                    return {
+                        message: "INSUFFICIENT_STOCK",
+                        error: true,
+                    };
+                }
 
                 for (const item of body.items) {
                     const resume = await service.createResumeByItem({

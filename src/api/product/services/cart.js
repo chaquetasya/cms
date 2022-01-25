@@ -10,13 +10,63 @@ const _ = require("lodash");
 module.exports = {
     /**
      *
-     * @param {{
-     *  designID: string | number,
-     *  currency: "COP",
+     * @param {Array<{
+     *  currency: "COP";
      *  products: Array<{
      *      sku: string;
      *      quantity: number;
-     *  }>,
+     *  }>;
+     * }>} data Cart
+     */
+    async validateStock(data) {
+        const items = _.chain(data)
+            .flatMap(p => p.products)
+            .groupBy(p => p.sku)
+            .mapValues(p => _.sumBy(p, i => i.quantity))
+            .value();
+
+        const skus = Object.keys(items);
+
+        const products = await strapi.entityService.findMany(
+            "api::product.product",
+            {
+                populate: "*",
+                filters: {
+                    sku: {
+                        $in: skus,
+                    },
+                },
+            }
+        );
+
+        if (products.length === skus.length) {
+            let hasStock = true;
+
+            for (const product of products) {
+                const quantity = items[product.sku];
+
+                if (quantity > product.stock) {
+                    hasStock = false;
+                    break;
+                }
+            }
+
+            return hasStock;
+        }
+
+        return false;
+    },
+
+    /**
+     *
+     * @param {{
+     *  id: string;
+     *  designID: string | number;
+     *  currency: "COP";
+     *  products: Array<{
+     *      sku: string;
+     *      quantity: number;
+     *  }>;
      * }} data Cart item
      */
     async createResumeByItem(data) {
@@ -32,6 +82,7 @@ module.exports = {
 
         if (!design) {
             return {
+                id: data.id,
                 message: "DESIGN_NOT_FOUND",
                 error: true,
             };
