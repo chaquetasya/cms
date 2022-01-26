@@ -5,6 +5,16 @@ module.exports = {
         try {
             const body = ctx.request.body;
 
+            // TEST
+
+            if (body.type === "test") {
+                ctx.status = 200;
+                ctx.body = {
+                    message: "OKI_DOKI",
+                    error: false,
+                };
+            }
+
             // PAYMENT
 
             if (body.type === "payment" && body.data?.id) {
