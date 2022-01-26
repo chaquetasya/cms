@@ -293,23 +293,26 @@ module.exports = {
             email: data.shipping.email,
         };
 
-        const back_urls = {
-            success: "http://localhost:3000/success",
-            pending: "http://localhost:3000/pending",
-            failure: "http://localhost:3000/failure",
+        const webURL = env("APP_URL");
+
+        const backURLs = {
+            success: `${webURL}/success`,
+            pending: `${webURL}/pending`,
+            failure: `${webURL}/failure`,
         };
+
+        const token = env("MERCADOPAGO_TOKEN");
 
         const response = await axios({
             method: "POST",
             url: "https://api.mercadopago.com/checkout/preferences",
             headers: {
-                Authorization:
-                    "Bearer TEST-6079595518141925-011300-4e57bb49a14ae0cb160b6fe4bd3f03dd-540002972",
+                Authorization: `Bearer ${token}`,
             },
             data: {
                 items: products,
                 payer: payer,
-                back_urls: back_urls,
+                back_urls: backURLs,
             },
         });
 
