@@ -5,11 +5,13 @@ module.exports = {
         try {
             const body = ctx.request.body;
 
+            // PAYMENT
+
             if (body.type === "payment" && body.data?.id) {
                 const service = strapi.service("api::webhook.mercadopago");
                 const payment = await service.findPayment(body.data.id);
 
-                if (payment) {
+                if (payment && payment.status === "approved") {
                     const order = await strapi.entityService.findOne(
                         "api::order.order",
                         payment.external_reference
@@ -21,37 +23,46 @@ module.exports = {
                             message: "ORDER_NOT_FOUND",
                             error: true,
                         };
+
+                        return;
                     }
 
-                    if (payment.status === "approved") {
-                        await strapi.entityService.update(
-                            "api::order.order",
-                            payment.external_reference,
-                            {
-                                data: {
-                                    status: "CONFIRMED",
-                                    payment: {
-                                        collector: "MERCADOPAGO",
-                                        currency: payment.currency_id,
-                                        amount: payment.transaction_amount,
-                                        external: body.data.id,
-                                        preference: payment.order.id,
-                                        paidAt: payment.date_created,
-                                        metadata: payment,
-                                    },
+                    await strapi.entityService.update(
+                        "api::order.order",
+                        payment.external_reference,
+                        {
+                            data: {
+                                status: "CONFIRMED",
+                                payment: {
+                                    collector: "MERCADOPAGO",
+                                    currency: payment.currency_id,
+                                    amount: payment.transaction_amount,
+                                    external: body.data.id,
+                                    preference: payment.order.id,
+                                    paidAt: payment.date_created,
+                                    metadata: payment,
                                 },
-                            }
-                        );
+                            },
+                        }
+                    );
 
-                        ctx.status = 202;
-                        ctx.body = {
-                            message: "PAYMENT_APPROVED",
-                            error: false,
-                        };
-                    }
+                    ctx.status = 202;
+                    ctx.body = {
+                        message: "PAYMENT_APPROVED",
+                        error: false,
+                    };
+
+                    return;
                 }
+
+                ctx.status = 400;
+                ctx.body = {
+                    message: "INVALID_REQUEST",
+                    error: true,
+                };
             }
         } catch (err) {
+            ctx.status = 500;
             ctx.body = {
                 message: err.message,
                 payload: err,

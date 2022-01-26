@@ -192,7 +192,10 @@ module.exports = {
      *  id: string,
      *  sku: string,
      *  title: string,
+     *  size: string,
      *  quantity: number,
+     *  currency: "COP",
+     *  stock: number,
      *  price: number,
      *  subtotal: number,
      *  total: number,
@@ -239,6 +242,8 @@ module.exports = {
             };
         });
 
+        // CREATE ORDER
+
         const order = await strapi.entityService.create("api::order.order", {
             data: {
                 shipping: data.shipping,
@@ -248,6 +253,19 @@ module.exports = {
                 cart: cart,
             },
         });
+
+        // DISCOUNT STOCK
+
+        await Promise.all(
+            _.flatMap(cart, i => i.products).map(product =>
+                strapi.query("api::product.product").update({
+                    where: { sku: product.sku },
+                    data: {
+                        stock: product.stock - product.quantity,
+                    },
+                })
+            )
+        );
 
         return order;
     },
