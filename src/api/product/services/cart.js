@@ -205,7 +205,7 @@ module.exports = {
      * @param {{
      *  currency: "COP",
      *  shipping: Shipping,
-     *  preference: Preference,
+     *  collector: "MERCADOPAGO",
      *  cart: Array<CartItem>,
      * }} data Order data to record
      * */
@@ -241,11 +241,7 @@ module.exports = {
 
         const order = await strapi.entityService.create("api::order.order", {
             data: {
-                collector: data.preference.collector,
-                preference: data.preference.id,
-                paymentURL: data.preference.initURL,
                 shipping: data.shipping,
-                currency: data.currency,
                 total: total,
                 metadata: {},
                 status: "PENDING",
@@ -265,6 +261,7 @@ module.exports = {
 
     /**
      * @param {{
+     *  id: string;
      *  currency: "COP",
      *  collector: "MERCADOPAGO",
      *  cart: Array<CartItem>,
@@ -296,9 +293,9 @@ module.exports = {
         const webURL = process.env.APP_URL;
 
         const backURLs = {
-            success: `${webURL}/success`,
-            pending: `${webURL}/pending`,
-            failure: `${webURL}/failure`,
+            success: `${webURL}/pago/${data.id}`,
+            pending: `${webURL}/pago/${data.id}`,
+            failure: `${webURL}/pago/fallido`,
         };
 
         const token = process.env.MERCADOPAGO_TOKEN;
@@ -313,6 +310,7 @@ module.exports = {
                 items: products,
                 payer: payer,
                 back_urls: backURLs,
+                external_reference: data.id,
             },
         });
 

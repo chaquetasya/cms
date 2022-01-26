@@ -12,22 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "collector": {
-      "type": "enumeration",
-      "enum": [
-        "MERCADOPAGO",
-        "OTHER"
-      ],
-      "default": "MERCADOPAGO",
-      "required": true
-    },
-    "paymentURL": {
-      "type": "text",
-      "required": false
-    },
-    "preference": {
-      "type": "uid"
-    },
     "shipping": {
       "type": "component",
       "repeatable": false,
@@ -90,12 +74,11 @@
       "required": true,
       "min": 1
     },
-    "paidAt": {
-      "type": "datetime"
-    },
-    "paymentID": {
-      "type": "string",
-      "unique": true
+    "payment": {
+      "type": "component",
+      "repeatable": false,
+      "component": "order.payment",
+      "required": false
     }
   }
 }

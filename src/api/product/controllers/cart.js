@@ -145,13 +145,16 @@ module.exports = {
                     cart: cart,
                 };
 
-                // PAYMENT
-
-                order.preference = await service.createPreference(order);
-
                 // CREATE ORDER
 
                 const doc = await service.createOrder(order);
+
+                // PAYMENT
+
+                const preference = await service.createPreference({
+                    ...order,
+                    id: doc.id,
+                });
 
                 if (!doc) {
                     ctx.body = {
@@ -166,8 +169,9 @@ module.exports = {
                     message: "ORDER_CREATED",
                     payload: {
                         orderID: doc.id,
-                        preferenceID: doc.preference,
-                        paymentURL: doc.paymentURL,
+                        preferenceID: preference.id,
+                        collector: doc.collector,
+                        paymentURL: preference.initURL,
                         total: doc.total,
                     },
                 };

@@ -19,19 +19,6 @@
                           "attributes": {
                             "type": "object",
                             "properties": {
-                              "collector": {
-                                "type": "string",
-                                "enum": [
-                                  "MERCADOPAGO",
-                                  "OTHER"
-                                ]
-                              },
-                              "paymentURL": {
-                                "type": "string"
-                              },
-                              "preference": {
-                                "type": "string"
-                              },
                               "shipping": {
                                 "type": "object",
                                 "properties": {
@@ -2857,12 +2844,42 @@
                                   }
                                 }
                               },
-                              "paidAt": {
-                                "type": "string",
-                                "format": "date-time"
-                              },
-                              "paymentID": {
-                                "type": "string"
+                              "payment": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "collector": {
+                                    "type": "string",
+                                    "enum": [
+                                      "MERCADOPAGO",
+                                      "OTHER"
+                                    ]
+                                  },
+                                  "currency": {
+                                    "type": "string",
+                                    "enum": [
+                                      "COP",
+                                      "USD"
+                                    ]
+                                  },
+                                  "amount": {
+                                    "type": "number",
+                                    "format": "float"
+                                  },
+                                  "external": {
+                                    "type": "string"
+                                  },
+                                  "preference": {
+                                    "type": "string"
+                                  },
+                                  "paidAt": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  },
+                                  "metadata": {}
+                                }
                               },
                               "createdAt": {
                                 "type": "string",
@@ -3188,19 +3205,6 @@
                         "attributes": {
                           "type": "object",
                           "properties": {
-                            "collector": {
-                              "type": "string",
-                              "enum": [
-                                "MERCADOPAGO",
-                                "OTHER"
-                              ]
-                            },
-                            "paymentURL": {
-                              "type": "string"
-                            },
-                            "preference": {
-                              "type": "string"
-                            },
                             "shipping": {
                               "type": "object",
                               "properties": {
@@ -6026,12 +6030,42 @@
                                 }
                               }
                             },
-                            "paidAt": {
-                              "type": "string",
-                              "format": "date-time"
-                            },
-                            "paymentID": {
-                              "type": "string"
+                            "payment": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "collector": {
+                                  "type": "string",
+                                  "enum": [
+                                    "MERCADOPAGO",
+                                    "OTHER"
+                                  ]
+                                },
+                                "currency": {
+                                  "type": "string",
+                                  "enum": [
+                                    "COP",
+                                    "USD"
+                                  ]
+                                },
+                                "amount": {
+                                  "type": "number",
+                                  "format": "float"
+                                },
+                                "external": {
+                                  "type": "string"
+                                },
+                                "preference": {
+                                  "type": "string"
+                                },
+                                "paidAt": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "metadata": {}
+                              }
                             },
                             "createdAt": {
                               "type": "string",
@@ -6246,13 +6280,6 @@
                   "data": {
                     "type": "object",
                     "properties": {
-                      "collector": {
-                        "type": "string",
-                        "enum": [
-                          "MERCADOPAGO",
-                          "OTHER"
-                        ]
-                      },
                       "shipping": {
                         "type": "object",
                         "properties": {
@@ -6425,19 +6452,6 @@
                         "attributes": {
                           "type": "object",
                           "properties": {
-                            "collector": {
-                              "type": "string",
-                              "enum": [
-                                "MERCADOPAGO",
-                                "OTHER"
-                              ]
-                            },
-                            "paymentURL": {
-                              "type": "string"
-                            },
-                            "preference": {
-                              "type": "string"
-                            },
                             "shipping": {
                               "type": "object",
                               "properties": {
@@ -9263,12 +9277,42 @@
                                 }
                               }
                             },
-                            "paidAt": {
-                              "type": "string",
-                              "format": "date-time"
-                            },
-                            "paymentID": {
-                              "type": "string"
+                            "payment": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "collector": {
+                                  "type": "string",
+                                  "enum": [
+                                    "MERCADOPAGO",
+                                    "OTHER"
+                                  ]
+                                },
+                                "currency": {
+                                  "type": "string",
+                                  "enum": [
+                                    "COP",
+                                    "USD"
+                                  ]
+                                },
+                                "amount": {
+                                  "type": "number",
+                                  "format": "float"
+                                },
+                                "external": {
+                                  "type": "string"
+                                },
+                                "preference": {
+                                  "type": "string"
+                                },
+                                "paidAt": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "metadata": {}
+                              }
                             },
                             "createdAt": {
                               "type": "string",
@@ -9503,19 +9547,6 @@
                         "attributes": {
                           "type": "object",
                           "properties": {
-                            "collector": {
-                              "type": "string",
-                              "enum": [
-                                "MERCADOPAGO",
-                                "OTHER"
-                              ]
-                            },
-                            "paymentURL": {
-                              "type": "string"
-                            },
-                            "preference": {
-                              "type": "string"
-                            },
                             "shipping": {
                               "type": "object",
                               "properties": {
@@ -12341,12 +12372,42 @@
                                 }
                               }
                             },
-                            "paidAt": {
-                              "type": "string",
-                              "format": "date-time"
-                            },
-                            "paymentID": {
-                              "type": "string"
+                            "payment": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "collector": {
+                                  "type": "string",
+                                  "enum": [
+                                    "MERCADOPAGO",
+                                    "OTHER"
+                                  ]
+                                },
+                                "currency": {
+                                  "type": "string",
+                                  "enum": [
+                                    "COP",
+                                    "USD"
+                                  ]
+                                },
+                                "amount": {
+                                  "type": "number",
+                                  "format": "float"
+                                },
+                                "external": {
+                                  "type": "string"
+                                },
+                                "preference": {
+                                  "type": "string"
+                                },
+                                "paidAt": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "metadata": {}
+                              }
                             },
                             "createdAt": {
                               "type": "string",
@@ -12572,19 +12633,6 @@
                   "data": {
                     "type": "object",
                     "properties": {
-                      "collector": {
-                        "type": "string",
-                        "enum": [
-                          "MERCADOPAGO",
-                          "OTHER"
-                        ]
-                      },
-                      "paymentURL": {
-                        "type": "string"
-                      },
-                      "preference": {
-                        "type": "string"
-                      },
                       "shipping": {
                         "type": "object",
                         "properties": {
@@ -12767,12 +12815,39 @@
                           }
                         }
                       },
-                      "paidAt": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "paymentID": {
-                        "type": "string"
+                      "payment": {
+                        "type": "object",
+                        "properties": {
+                          "collector": {
+                            "type": "string",
+                            "enum": [
+                              "MERCADOPAGO",
+                              "OTHER"
+                            ]
+                          },
+                          "currency": {
+                            "type": "string",
+                            "enum": [
+                              "COP",
+                              "USD"
+                            ]
+                          },
+                          "amount": {
+                            "type": "number",
+                            "format": "float"
+                          },
+                          "external": {
+                            "type": "string"
+                          },
+                          "preference": {
+                            "type": "string"
+                          },
+                          "paidAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "metadata": {}
+                        }
                       },
                       "createdAt": {
                         "type": "string",
