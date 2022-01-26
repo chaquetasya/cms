@@ -293,7 +293,7 @@ module.exports = {
             email: data.shipping.email,
         };
 
-        const webURL = env("APP_URL");
+        const webURL = process.env.APP_URL;
 
         const backURLs = {
             success: `${webURL}/success`,
@@ -301,7 +301,7 @@ module.exports = {
             failure: `${webURL}/failure`,
         };
 
-        const token = env("MERCADOPAGO_TOKEN");
+        const token = process.env.MERCADOPAGO_TOKEN;
 
         const response = await axios({
             method: "POST",

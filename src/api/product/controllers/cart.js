@@ -127,7 +127,7 @@ module.exports = {
                         ...item,
                     });
 
-                    if (!resume.subtotal || isNaN(resume.subtotal)) {
+                    if (!resume.total || isNaN(resume.total)) {
                         throw Error("INVALID_RESUME");
                     }
 
