@@ -25,6 +25,11 @@ module.exports = {
                         id: Joi.string().required(),
                         designID: Joi.number().required(),
                         products: productsSchema,
+                        prints: Joi.object({
+                            upperLeft: Joi.string(),
+                            upperRight: Joi.string(),
+                            upperBack: Joi.string(),
+                        }),
                     })
                 ),
             });
@@ -55,7 +60,10 @@ module.exports = {
                         total += resume.total;
                     }
 
-                    items.push(resume);
+                    items.push({
+                        ...resume,
+                        prints: item.prints,
+                    });
                 }
 
                 ctx.body = {
