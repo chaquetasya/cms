@@ -43,7 +43,7 @@
     },
     "paidAt": {
       "type": "datetime",
-      "required": false
+      "required": true
     },
     "metadata": {
       "type": "json"

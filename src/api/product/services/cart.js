@@ -248,9 +248,9 @@ module.exports = {
             data: {
                 shipping: data.shipping,
                 total: total,
-                metadata: {},
                 status: "PENDING",
                 cart: cart,
+                metadata: {},
             },
         });
 
@@ -311,9 +311,9 @@ module.exports = {
         const webURL = process.env.APP_URL;
 
         const backURLs = {
-            success: `${webURL}/pago/${data.id}`,
-            pending: `${webURL}/pago/${data.id}`,
-            failure: `${webURL}/pago/fallido`,
+            success: `${webURL}/orden/${data.id}`,
+            pending: `${webURL}/orden/${data.id}`,
+            failure: `${webURL}/orden/error`,
         };
 
         const token = process.env.MERCADOPAGO_TOKEN;
