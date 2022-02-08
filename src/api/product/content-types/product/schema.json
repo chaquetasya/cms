@@ -25,12 +25,18 @@
     "size": {
       "type": "enumeration",
       "enum": [
-        "XS",
-        "S",
-        "M",
-        "L",
-        "XL",
-        "XXL"
+        "XSM",
+        "SM",
+        "MM",
+        "LM",
+        "XLM",
+        "XXLM",
+        "XSF",
+        "SF",
+        "MF",
+        "LF",
+        "XLF",
+        "XXLF"
       ],
       "required": true
     },

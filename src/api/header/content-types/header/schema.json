@@ -38,6 +38,15 @@
         }
       },
       "component": "basics.footer-link"
+    },
+    "whatsapp": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": false
     }
   }
 }
