@@ -16,8 +16,7 @@
         "@strapi/strapi": "^4.0.6",
         "axios": "^0.24.0",
         "joi": "^17.5.0",
-        "mysql": "^2.18.1",
-        "sqlite3": "^4.2.0"
+        "mysql": "^2.18.1"
     },
     "author": {
         "name": "Andres Celis"
