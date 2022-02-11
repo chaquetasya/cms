@@ -38,17 +38,9 @@ module.exports = {
 
             if (!schemaErrors) {
                 const service = strapi.service("api::product.cart");
-                // const hasStock = await service.validateStock(body.items);
                 const items = [];
 
-                let total = 0;
-
-                // if (!hasStock) {
-                //     return {
-                //         message: "INSUFFICIENT_STOCK",
-                //         error: true,
-                //     };
-                // }
+                let subtotal = 0;
 
                 for (const item of body.items) {
                     const resume = await service.createResumeByItem({
@@ -65,7 +57,7 @@ module.exports = {
                         continue;
                     }
 
-                    total += resume.total;
+                    subtotal += resume.total;
 
                     items.push({
                         ...resume,
@@ -74,10 +66,17 @@ module.exports = {
                     });
                 }
 
+                const shipping = service.calculateShipping({
+                    currency: body.currency,
+                    subtotal: subtotal,
+                });
+
                 ctx.body = {
                     currency: body.currency,
                     items: items,
-                    total: total,
+                    shipping: shipping,
+                    subtotal: subtotal,
+                    total: subtotal + shipping,
                 };
 
                 return;

@@ -60,6 +60,23 @@ module.exports = {
     /**
      *
      * @param {{
+     *  currency: "COP";
+     *  subtotal: number;
+     * }} data
+     */
+    calculateShipping(data) {
+        if (data.subtotal === 0) return 0;
+
+        if (data.currency === "COP") {
+            return 6000;
+        }
+
+        return null;
+    },
+
+    /**
+     *
+     * @param {{
      *  id: string;
      *  designID: string | number;
      *  currency: "COP";
