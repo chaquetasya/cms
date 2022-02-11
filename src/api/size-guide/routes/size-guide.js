@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * term router.
+ * size-guide router.
  */
 
 const { createCoreRouter } = require('@strapi/strapi').factories;
 
-module.exports = createCoreRouter('api::term.term');
+module.exports = createCoreRouter('api::size-guide.size-guide');

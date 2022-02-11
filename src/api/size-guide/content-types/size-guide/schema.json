@@ -1,0 +1,26 @@
+{
+  "kind": "singleType",
+  "collectionName": "size_guides",
+  "info": {
+    "singularName": "size-guide",
+    "pluralName": "size-guides",
+    "displayName": "Size Guide"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "description": {
+      "type": "richtext",
+      "required": true
+    },
+    "references": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": true
+    }
+  }
+}

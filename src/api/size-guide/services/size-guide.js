@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * term service.
+ * size-guide service.
  */
 
 const { createCoreService } = require('@strapi/strapi').factories;
 
-module.exports = createCoreService('api::term.term');
+module.exports = createCoreService('api::size-guide.size-guide');
