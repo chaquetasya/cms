@@ -1,7 +1,7 @@
 {
   "collectionName": "components_order_shippings",
   "info": {
-    "displayName": "shipping",
+    "displayName": "shipment",
     "icon": "box-open",
     "description": ""
   },

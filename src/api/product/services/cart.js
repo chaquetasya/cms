@@ -182,7 +182,7 @@ module.exports = {
 
     /**
      *
-     * @typedef Shipping
+     * @typedef Shipment
      * @type {object}
      * @prop {string} firstname
      * @prop {string} lastname
@@ -197,7 +197,7 @@ module.exports = {
 
     /**
      *
-     * @typedef CartItem
+     * @typedef Cart
      * @type {object}
      * @prop {string} design
      * @prop {{
@@ -214,7 +214,6 @@ module.exports = {
      *  currency: "COP",
      *  stock: number,
      *  price: number,
-     *  subtotal: number,
      *  total: number,
      * }>} products
      */
@@ -224,64 +223,94 @@ module.exports = {
      *
      * @param {{
      *  currency: "COP",
-     *  shipping: Shipping,
+     *  shipment: Shipment,
      *  collector: "MERCADOPAGO",
-     *  cart: Array<CartItem>,
+     *  cart: Array<Cart>,
      * }} data Order data to record
      * */
     async createOrder(data) {
-        let total = 0;
+        let subtotal = 0;
 
-        const cart = _.map(data.cart, i => {
-            let subtotal = 0;
+        const carts = _.map(data.cart, item => {
+            let total = 0;
 
-            const products = _.map(i.products, p => {
-                const item = {
-                    ...p,
-                    product: p.id,
+            const products = _.map(item.products, product => {
+                // CartProduct
+                const payload = {
+                    product: product.id,
+                    price: product.price,
+                    total: product.total,
+                    quantity: product.quantity,
+                    metadata: {
+                        sku: product.sku,
+                        stock: product.stock,
+                    },
                 };
 
-                subtotal += item.total;
-                delete item.id;
-
-                return item;
+                total += payload.total;
+                return payload;
             });
 
-            const prints = _.mapKeys(i.prints, (_, key) => key.split("ID")[0]);
+            const prints = _.mapKeys(
+                item.prints,
+                (_, key) => key.split("ID")[0]
+            );
 
-            total += subtotal;
+            subtotal += total;
 
             return {
-                ...i,
-                products,
-                prints,
-                total: subtotal,
+                design: item.design,
+                prints: prints,
+                products: products,
+                total: total,
             };
         });
 
+        const shipment = {
+            firstname: data.shipment.firstname,
+            lastname: data.shipment.lastname,
+            email: data.shipment.email,
+            phone: data.shipment.phone,
+            country: data.shipment.country,
+            city: data.shipment.city,
+            address: data.shipment.address,
+            zip: data.shipment.zip,
+            note: data.shipment.note,
+        };
+
         // CREATE ORDER
+
+        const shipping = this.calculateShipping({
+            currency: data.currency,
+            subtotal: subtotal,
+        });
 
         const order = await strapi.entityService.create("api::order.order", {
             data: {
-                shipping: data.shipping,
-                total: total,
+                currency: data.currency,
+                subtotal: subtotal,
+                shipping: shipping,
+                total: subtotal + shipping,
                 status: "PENDING",
-                cart: cart,
-                metadata: {},
+                cart: carts,
+                shipment: shipment,
             },
         });
 
         // DISCOUNT STOCK
 
         await Promise.all(
-            _.flatMap(cart, i => i.products).map(product =>
-                strapi.query("api::product.product").update({
-                    where: { sku: product.sku },
-                    data: {
-                        stock: product.stock - product.quantity,
-                    },
-                })
-            )
+            _.chain(carts)
+                .flatMap(i => i.products)
+                .map(p =>
+                    strapi.query("api::product.product").update({
+                        where: { sku: p.metadata.sku },
+                        data: {
+                            stock: p.metadata.stock - p.quantity,
+                        },
+                    })
+                )
+                .value()
         );
 
         return order;
@@ -299,8 +328,8 @@ module.exports = {
      *  id: string;
      *  currency: "COP",
      *  collector: "MERCADOPAGO",
-     *  cart: Array<CartItem>,
-     *  shipping: Shipping,
+     *  cart: Array<Cart>,
+     *  shipping: Shipment,
      * }} data
      *
      * @returns {Preference}
@@ -320,9 +349,9 @@ module.exports = {
             });
 
         const payer = {
-            name: data.shipping.firstname,
-            surname: data.shipping.lastname,
-            email: data.shipping.email,
+            name: data.shipment.firstname,
+            surname: data.shipment.lastname,
+            email: data.shipment.email,
         };
 
         const webURL = process.env.APP_URL;

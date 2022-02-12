@@ -1,8 +1,9 @@
 {
   "collectionName": "components_order_couriers",
   "info": {
-    "displayName": "courier",
-    "icon": "dolly"
+    "displayName": "messenger",
+    "icon": "dolly",
+    "description": ""
   },
   "options": {},
   "attributes": {

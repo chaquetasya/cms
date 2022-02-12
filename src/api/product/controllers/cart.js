@@ -101,7 +101,7 @@ module.exports = {
             const schema = Joi.object({
                 currency: currencySchema.required(),
 
-                shipping: Joi.object({
+                shipment: Joi.object({
                     firstname: Joi.string().required(),
                     lastname: Joi.string().required(),
                     email: Joi.string().email().required(),
@@ -138,8 +138,10 @@ module.exports = {
 
                 for (const item of body.cart) {
                     const resume = await service.createResumeByItem({
+                        id: item.id,
+                        designID: item.designID,
                         currency: body.currency,
-                        ...item,
+                        products: item.products,
                     });
 
                     if (!resume.total || isNaN(resume.total)) {
@@ -147,7 +149,7 @@ module.exports = {
                     }
 
                     cart.push({
-                        design: resume.designID,
+                        design: item.designID,
                         prints: item.prints,
                         products: resume.products,
                     });
@@ -156,7 +158,7 @@ module.exports = {
                 const order = {
                     currency: "COP",
                     collector: "MERCADOPAGO",
-                    shipping: body.shipping,
+                    shipment: body.shipment,
                     cart: cart,
                 };
 

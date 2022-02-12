@@ -12,30 +12,31 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "shipping": {
-      "type": "component",
-      "repeatable": false,
-      "component": "order.shipping",
-      "required": true
-    },
     "currency": {
       "type": "enumeration",
       "enum": [
-        "COP",
-        "USD"
+        "COP"
       ],
       "default": "COP",
       "required": true
+    },
+    "subtotal": {
+      "type": "float",
+      "min": 0,
+      "required": true,
+      "default": 0
+    },
+    "shipping": {
+      "type": "float",
+      "min": 0,
+      "required": true,
+      "default": 0
     },
     "total": {
       "type": "float",
       "min": 0,
       "required": true,
       "default": 0
-    },
-    "metadata": {
-      "type": "json",
-      "private": true
     },
     "status": {
       "type": "enumeration",
@@ -48,23 +49,6 @@
       ],
       "default": "PENDING",
       "required": true
-    },
-    "note": {
-      "type": "text",
-      "private": true
-    },
-    "invoice": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "files"
-      ]
-    },
-    "courier": {
-      "type": "component",
-      "repeatable": false,
-      "component": "order.courier"
     },
     "cart": {
       "displayName": "cart",
@@ -79,6 +63,33 @@
       "repeatable": false,
       "component": "order.payment",
       "required": false
+    },
+    "note": {
+      "type": "text",
+      "private": true
+    },
+    "shipment": {
+      "type": "component",
+      "repeatable": false,
+      "component": "order.shipment",
+      "required": true
+    },
+    "invoice": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "messenger": {
+      "type": "component",
+      "repeatable": false,
+      "component": "order.messenger"
+    },
+    "metadata": {
+      "type": "json",
+      "private": true
     }
   }
 }

@@ -24,6 +24,12 @@
       "component": "order.cart-item",
       "required": true,
       "min": 1
+    },
+    "total": {
+      "type": "float",
+      "required": true,
+      "min": 0,
+      "default": 0
     }
   }
 }

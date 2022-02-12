@@ -17,8 +17,8 @@ module.exports = createCoreController("api::order.order", () => {
                         populate: true,
                     },
 
-                    shipping: true,
-                    courier: true,
+                    shipment: true,
+                    messenger: true,
                     payment: true,
                     invoice: true,
                 },
