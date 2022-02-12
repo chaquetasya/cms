@@ -4,7 +4,8 @@
   "info": {
     "singularName": "size-guide",
     "pluralName": "size-guides",
-    "displayName": "Size Guide"
+    "displayName": "Size Guide",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -16,11 +17,12 @@
       "required": true
     },
     "references": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
       "allowedTypes": [
         "images"
-      ],
-      "type": "media",
-      "multiple": true
+      ]
     }
   }
 }

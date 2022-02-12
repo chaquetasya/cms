@@ -13,10 +13,6 @@ module.exports = createCoreController("api::faq.faq", () => {
                 populate: {
                     questions: true,
                 },
-
-                where: {
-                    locale: ctx.request?.query?.locale ?? "en",
-                },
             });
 
             if (Array.isArray(faqs?.questions)) {
