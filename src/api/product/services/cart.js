@@ -295,6 +295,7 @@ module.exports = {
                 cart: carts,
                 shipment: shipment,
             },
+            populate: "*",
         });
 
         // DISCOUNT STOCK
@@ -313,6 +314,16 @@ module.exports = {
                 .value()
         );
 
+        // SEND EMAIL
+
+        const mailing = strapi.service("api::notifications.mailing");
+
+        await mailing.sendOrderCreated({
+            id: order.id,
+            firstname: order.shipment?.firstname ?? "",
+            email: order.shipment.email,
+        });
+
         return order;
     },
 
@@ -329,18 +340,18 @@ module.exports = {
      *  currency: "COP",
      *  collector: "MERCADOPAGO",
      *  cart: Array<Cart>,
-     *  shipping: Shipment,
+     *  shipment: Shipment,
+     *  shipping: number,
      * }} data
      *
      * @returns {Preference}
      */
     async createPreference(data) {
-        const products = data.cart
-            .map(i => i.products)
-            .flat()
+        const charges = data.cart
+            .flatMap(i => i.products)
             .map(product => {
                 return {
-                    id: product.id,
+                    id: product.sku,
                     title: product.title,
                     quantity: product.quantity,
                     currency_id: data.currency,
@@ -348,11 +359,21 @@ module.exports = {
                 };
             });
 
+        charges.push({
+            id: "shipping",
+            title: "Envío",
+            quantity: 1,
+            currency_id: data.currency,
+            unit_price: data.shipping,
+        });
+
         const payer = {
             name: data.shipment.firstname,
             surname: data.shipment.lastname,
             email: data.shipment.email,
         };
+
+        // WEBHOOK
 
         const webURL = process.env.APP_URL;
 
@@ -361,6 +382,8 @@ module.exports = {
             pending: `${webURL}/orden/${data.id}`,
             failure: `${webURL}/orden/error`,
         };
+
+        // SEND
 
         const token = process.env.MERCADOPAGO_TOKEN;
 
@@ -371,7 +394,7 @@ module.exports = {
                 Authorization: `Bearer ${token}`,
             },
             data: {
-                items: products,
+                items: charges,
                 payer: payer,
                 back_urls: backURLs,
                 external_reference: data.id,

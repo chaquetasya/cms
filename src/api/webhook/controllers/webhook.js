@@ -19,6 +19,7 @@ module.exports = {
 
             if (body.type === "payment" && body.data?.id) {
                 const service = strapi.service("api::webhook.mercadopago");
+                const mailing = strapi.service("api::notifications.mailing");
                 const payment = await service.findPayment(body.data.id);
 
                 if (payment && payment.status === "approved") {
@@ -55,6 +56,14 @@ module.exports = {
                             },
                         }
                     );
+
+                    // SEND EMAIL
+
+                    await mailing.sendOrderConfirmed({
+                        id: order.id,
+                        firstname: order.shipment?.firstname ?? "",
+                        email: order.shipment.email,
+                    });
 
                     ctx.status = 202;
                     ctx.body = {

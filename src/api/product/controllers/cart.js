@@ -166,16 +166,29 @@ module.exports = {
 
                 const doc = await service.createOrder(order);
 
-                // PAYMENT
-
-                const preference = await service.createPreference({
-                    ...order,
-                    id: doc.id,
-                });
-
                 if (!doc) {
                     ctx.body = {
                         message: "ORDER_NOT_CREATED",
+                        error: true,
+                    };
+
+                    return;
+                }
+
+                // PAYMENT
+
+                const preference = await service.createPreference({
+                    id: doc.id,
+                    currency: "COP",
+                    collector: "MERCADOPAGO",
+                    cart: cart,
+                    shipment: body.shipment,
+                    shipping: doc.shipping,
+                });
+
+                if (!preference) {
+                    ctx.body = {
+                        message: "PREFERENCE_NOT_CREATED",
                         error: true,
                     };
 
