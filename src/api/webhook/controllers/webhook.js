@@ -25,7 +25,10 @@ module.exports = {
                 if (payment && payment.status === "approved") {
                     const order = await strapi.entityService.findOne(
                         "api::order.order",
-                        payment.external_reference
+                        payment.external_reference,
+                        {
+                            populate: "*",
+                        }
                     );
 
                     if (!order) {
@@ -57,13 +60,15 @@ module.exports = {
                         }
                     );
 
-                    // SEND EMAIL
+                    if (order.shipment?.email && order.shipment?.firstname) {
+                        // SEND EMAIL
 
-                    await mailing.sendOrderConfirmed({
-                        id: order.id,
-                        firstname: order.shipment?.firstname ?? "",
-                        email: order.shipment.email,
-                    });
+                        await mailing.sendOrderConfirmed({
+                            id: order.id,
+                            firstname: order.shipment?.firstname,
+                            email: order.shipment?.email,
+                        });
+                    }
 
                     ctx.status = 202;
                     ctx.body = {
@@ -81,6 +86,8 @@ module.exports = {
                 };
             }
         } catch (err) {
+            console.error(err);
+
             ctx.status = 500;
             ctx.body = {
                 message: err.message,
