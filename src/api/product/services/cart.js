@@ -278,8 +278,6 @@ module.exports = {
             note: data.shipment.note,
         };
 
-        // CREATE ORDER
-
         const shipping = this.calculateShipping({
             currency: data.currency,
             subtotal: subtotal,
@@ -335,16 +333,19 @@ module.exports = {
      */
 
     /**
-     * @param {{
-     *  id: string;
-     *  currency: "COP",
-     *  collector: "MERCADOPAGO",
-     *  cart: Array<Cart>,
-     *  shipment: Shipment,
-     *  shipping: number,
-     * }} data
+     * @typedef CreatePreferenceInput
+     * @prop {string} id Order ID
+     * @prop {"COP"} currency
+     * @prop {"MERCADOPAGO"} collector
+     * @prop {Array<Cart>} cart
+     * @prop {Shipment} shipment
+     * @prop {number} shipping
+     */
+
+    /**
+     * @param {CreatePreferenceInput} data
      *
-     * @returns {Preference}
+     * @returns {Promise<Preference>}
      */
     async createPreference(data) {
         const charges = data.cart
@@ -387,7 +388,7 @@ module.exports = {
 
         const token = process.env.MERCADOPAGO_TOKEN;
 
-        const response = await axios({
+        const { data: response } = await axios({
             method: "POST",
             url: "https://api.mercadopago.com/checkout/preferences",
             headers: {
@@ -401,7 +402,13 @@ module.exports = {
             },
         });
 
-        if (response.data.id) {
+        if (response.id) {
+            await strapi.entityService.update("api::order.order", data.id, {
+                data: {
+                    paymentURL: response.init_point,
+                },
+            });
+
             return {
                 id: response.data.id,
                 collector: data.collector,

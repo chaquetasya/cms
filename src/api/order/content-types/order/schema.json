@@ -58,6 +58,9 @@
       "required": true,
       "min": 1
     },
+    "paymentURL": {
+      "type": "string"
+    },
     "payment": {
       "type": "component",
       "repeatable": false,
