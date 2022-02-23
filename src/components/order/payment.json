@@ -46,7 +46,8 @@
       "required": true
     },
     "metadata": {
-      "type": "json"
+      "type": "json",
+      "private": true
     }
   }
 }
