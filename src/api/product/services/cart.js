@@ -68,7 +68,7 @@ module.exports = {
         if (data.subtotal === 0) return 0;
 
         if (data.currency === "COP") {
-            return 6000;
+            return 10000; // 10.000 COP
         }
 
         return null;
