@@ -12,6 +12,10 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "tutorial": {
+      "type": "richtext",
+      "required": false
+    },
     "questions": {
       "displayName": "FAQ",
       "type": "component",

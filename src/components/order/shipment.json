@@ -41,6 +41,14 @@
     },
     "note": {
       "type": "text"
+    },
+    "stategy": {
+      "type": "enumeration",
+      "enum": [
+        "STANDARD",
+        "EXPRESS",
+        "NONE"
+      ]
     }
   }
 }

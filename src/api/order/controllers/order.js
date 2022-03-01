@@ -36,6 +36,7 @@ module.exports = createCoreController("api::order.order", () => {
                     messenger: true,
                     payment: true,
                     invoice: true,
+                    messenger: true,
                 },
 
                 where: {

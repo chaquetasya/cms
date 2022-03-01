@@ -15,12 +15,8 @@ module.exports = createCoreController("api::faq.faq", () => {
                 },
             });
 
-            if (Array.isArray(faqs?.questions)) {
-                return faqs?.questions;
-            }
-
-            ctx.status = 404;
-            return;
+            ctx.status = 200;
+            ctx.body = faqs;
         },
     };
 });
