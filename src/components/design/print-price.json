@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_design_print_prices",
+  "info": {
+    "displayName": "printPrice",
+    "icon": "dollar-sign",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "currency": {
+      "type": "enumeration",
+      "enum": [
+        "COP",
+        "USD"
+      ],
+      "default": "COP",
+      "required": true
+    },
+    "upperLeft": {
+      "type": "float",
+      "required": true,
+      "min": 0,
+      "default": 0
+    },
+    "upperRight": {
+      "type": "float",
+      "required": true,
+      "min": 0,
+      "default": 0
+    },
+    "upperBack": {
+      "type": "float",
+      "required": true,
+      "min": 0,
+      "default": 0
+    }
+  }
+}

@@ -17,33 +17,8 @@
       "required": true,
       "default": "CQY-"
     },
-    "stock": {
-      "type": "integer",
-      "required": true,
-      "min": 0
-    },
-    "size": {
-      "type": "enumeration",
-      "enum": [
-        "XSM",
-        "SM",
-        "MM",
-        "LM",
-        "XLM",
-        "XXLM",
-        "XSF",
-        "SF",
-        "MF",
-        "LF",
-        "XLF",
-        "XXLF"
-      ],
-      "required": true
-    },
-    "prices": {
-      "type": "component",
-      "repeatable": true,
-      "component": "product.price",
+    "title": {
+      "type": "string",
       "required": true
     },
     "design": {
@@ -52,8 +27,27 @@
       "target": "api::design.design",
       "inversedBy": "products"
     },
-    "title": {
-      "type": "string",
+    "stock": {
+      "type": "integer",
+      "required": true,
+      "min": 0
+    },
+    "size": {
+      "type": "enumeration",
+      "enum": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "required": true
+    },
+    "prices": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.price",
       "required": true
     }
   }

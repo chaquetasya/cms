@@ -76,10 +76,46 @@ module.exports = {
 
     /**
      *
+     * @typedef DesignPrice
+     * @prop {"COP"} currency
+     * @prop {number} upperLeft
+     * @prop {number} upperRight
+     * @prop {number} upperBack
+     */
+
+    /**
+     *
+     * @typedef Prints
+     * @prop {string} upperLeft
+     * @prop {string} upperRight
+     * @prop {string} upperBack
+     */
+
+    /**
+     *
+     * @param {{
+     *  prices: DesignPrice;
+     *  prints: Prints;
+     * }} data
+     */
+    calculateNeedlework(data) {
+        return _.reduce(
+            data.prints,
+
+            (acc, value, key) => {
+                return Boolean(value) ? acc + data.prices[key] : acc;
+            },
+
+            0
+        );
+    },
+
+    /**
+     *
      * @param {{
      *  id: string;
-     *  designID: string | number;
      *  currency: "COP";
+     *  designID: string | number;
      *  products: Array<{
      *      sku: string;
      *      quantity: number;
@@ -93,17 +129,30 @@ module.exports = {
             "api::design.design",
             data.designID,
             {
-                populate: "backwards, forwards",
+                populate: {
+                    forwards: true,
+                    backwards: true,
+                    prices: {
+                        where: {
+                            currency: data.currency,
+                        },
+                    },
+                },
             }
         );
 
-        if (!design) {
+        if (!design || !design.prices?.[0]) {
             return {
                 id: data.id,
                 message: "DESIGN_NOT_FOUND",
                 error: true,
             };
         }
+
+        const needlework = this.calculateNeedlework({
+            prices: design.prices[0],
+            prints: data.prints,
+        });
 
         // PRODUCTS
 
@@ -134,6 +183,14 @@ module.exports = {
         const offers = products.map(product => {
             const selected = data.products.find(i => i.sku === product.sku);
 
+            if (!selected) {
+                return {
+                    sku: product.sku,
+                    message: "PRODUCT_NOT_FOUND",
+                    error: true,
+                };
+            }
+
             const price = product.prices.find(price => {
                 const min = selected.quantity >= price.min;
                 const max = price.max ? selected.quantity <= price.max : true;
@@ -151,6 +208,8 @@ module.exports = {
                 };
             }
 
+            const total = subtotal + needlework;
+
             return {
                 id: product.id,
                 sku: product.sku,
@@ -160,8 +219,9 @@ module.exports = {
                 currency: price.currency,
                 stock: product.stock,
                 price: price.value,
+                needlework: needlework,
                 subtotal: subtotal,
-                total: subtotal,
+                total: total,
             };
         });
 
@@ -199,7 +259,7 @@ module.exports = {
      *
      * @typedef Cart
      * @type {object}
-     * @prop {string} design
+     * @prop {string} designID
      * @prop {{
      *  upperLeftID?: number,
      *  upperRightID?: number,
@@ -235,7 +295,7 @@ module.exports = {
             let total = 0;
 
             const products = _.map(item.products, product => {
-                // CartProduct
+                /** @type {CartProduct} */
                 const payload = {
                     product: product.id,
                     price: product.price,
@@ -244,6 +304,7 @@ module.exports = {
                     metadata: {
                         sku: product.sku,
                         stock: product.stock,
+                        needlework: product.needlework,
                     },
                 };
 
@@ -259,7 +320,7 @@ module.exports = {
             subtotal += total;
 
             return {
-                design: item.design,
+                design: item.designID,
                 prints: prints,
                 products: products,
                 total: total,
@@ -284,6 +345,8 @@ module.exports = {
         });
 
         const order = await strapi.entityService.create("api::order.order", {
+            populate: "*",
+
             data: {
                 currency: data.currency,
                 subtotal: subtotal,
@@ -293,7 +356,6 @@ module.exports = {
                 cart: carts,
                 shipment: shipment,
             },
-            populate: "*",
         });
 
         // DISCOUNT STOCK

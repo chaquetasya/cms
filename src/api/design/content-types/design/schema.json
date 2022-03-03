@@ -49,6 +49,12 @@
     },
     "material": {
       "type": "string"
+    },
+    "prices": {
+      "displayName": "printPrice",
+      "type": "component",
+      "repeatable": true,
+      "component": "design.print-price"
     }
   }
 }
