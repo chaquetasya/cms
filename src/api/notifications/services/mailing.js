@@ -24,7 +24,7 @@ module.exports = {
                 method: "POST",
                 url: "https://api.sendinblue.com/v3/smtp/email",
                 headers: {
-                    "api-key": process.env.SENDINBLUE_API_KEY,
+                    "api-key": process.env.SENDINBLUE_TOKEN,
                 },
                 data: {
                     subject: data.subject,

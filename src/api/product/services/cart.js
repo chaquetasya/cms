@@ -450,7 +450,7 @@ module.exports = {
 
         const token = process.env.MERCADOPAGO_TOKEN;
 
-        const { data: response } = await axios({
+        const res = await axios({
             method: "POST",
             url: "https://api.mercadopago.com/checkout/preferences",
             headers: {
@@ -464,17 +464,17 @@ module.exports = {
             },
         });
 
-        if (response.id) {
+        if (res.id) {
             await strapi.entityService.update("api::order.order", data.id, {
                 data: {
-                    paymentURL: response.init_point,
+                    paymentURL: res.data.init_point,
                 },
             });
 
             return {
-                id: response.data.id,
+                id: res.data.id,
                 collector: data.collector,
-                initURL: response.data.init_point,
+                initURL: res.data.init_point,
             };
         }
     },
