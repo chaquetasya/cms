@@ -1,5 +1,7 @@
 "use strict";
 
+const { captureException } = require("@sentry/node");
+
 module.exports = {
     mercadoPago: async (ctx, next) => {
         try {
@@ -86,6 +88,7 @@ module.exports = {
                 };
             }
         } catch (err) {
+            captureException(err);
             console.error(err);
 
             ctx.status = 500;

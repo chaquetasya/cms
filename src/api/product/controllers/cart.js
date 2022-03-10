@@ -1,6 +1,10 @@
 "use strict";
 
+// @ts-check
+
 const Joi = require("joi");
+
+const { captureException } = require("@sentry/node");
 
 const currencySchema = Joi.string().valid("COP", "USD");
 
@@ -91,6 +95,7 @@ module.exports = {
 
             return;
         } catch (err) {
+            captureException(err);
             console.error(err);
             ctx.body = err;
         }
@@ -223,6 +228,7 @@ module.exports = {
             return;
         } catch (err) {
             console.error(err);
+            captureException(err);
 
             ctx.body = {
                 message: err.message,

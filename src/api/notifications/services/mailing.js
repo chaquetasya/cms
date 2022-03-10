@@ -1,6 +1,9 @@
 "use strict";
 
-const mailjet = require("node-mailjet");
+const { addBreadcrumb, captureException } = require("@sentry/node");
+const axios = require("axios");
+
+// @ts-check
 
 /**
  * mailing service.
@@ -17,31 +20,33 @@ module.exports = {
      */
     async sendBasicEmail(data) {
         try {
-            const mailer = mailjet.connect(
-                process.env.MAILJET_API_KEY,
-                process.env.MAILJET_API_SECRET
-            );
-
-            await mailer.post("send", { version: "v3.1" }).request({
-                Messages: [
-                    {
-                        From: {
-                            Email: process.env.MAILJET_EMAIL,
-                            Name: "Chaquetas Ya",
-                        },
-                        To: [
-                            {
-                                Email: data.to,
-                            },
-                        ],
-                        Subject: data.subject,
-                        HTMLPart: data.html,
+            const res = await axios({
+                method: "POST",
+                url: "https://api.sendinblue.com/v3/smtp/email",
+                headers: {
+                    "api-key": process.env.SENDINBLUE_API_KEY,
+                },
+                data: {
+                    subject: data.subject,
+                    to: [{ email: data.to }],
+                    sender: {
+                        name: "Chaquetas Ya",
+                        email: process.env.MAILJET_EMAIL,
                     },
-                ],
+
+                    htmlContent: data.html,
+                },
             });
+
+            if (res.status === 200) {
+                return true;
+            }
         } catch (err) {
             console.error(err);
+            captureException(err);
         }
+
+        return false;
     },
 
     /**
@@ -54,6 +59,17 @@ module.exports = {
      */
     async sendOrderCreated(data) {
         const webURL = process.env.APP_URL;
+
+        addBreadcrumb({
+            message: "Sending order created email",
+            category: "mailing",
+            level: "info",
+            data: {
+                id: data.id,
+                firstname: data.firstname,
+                email: data.email,
+            },
+        });
 
         this.sendBasicEmail({
             to: data.email,
@@ -79,6 +95,17 @@ module.exports = {
      */
     async sendOrderConfirmed(data) {
         const webURL = process.env.APP_URL;
+
+        addBreadcrumb({
+            message: "Sending order confirmed email",
+            category: "mailing",
+            level: "info",
+            data: {
+                id: data.id,
+                firstname: data.firstname,
+                email: data.email,
+            },
+        });
 
         this.sendBasicEmail({
             to: data.email,

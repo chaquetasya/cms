@@ -1,5 +1,7 @@
 "use strict";
 
+const { captureException } = require("@sentry/node");
+
 /**
  * A set of functions called "actions" for `stock`
  */
@@ -28,6 +30,7 @@ module.exports = {
             ctx.body = products || [];
         } catch (err) {
             console.error(err);
+            captureException(err);
             ctx.body = [];
         }
     },
