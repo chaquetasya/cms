@@ -115,6 +115,7 @@ module.exports = {
      * @param {{
      *  id: string;
      *  currency: "COP";
+     *  prints: Prints;
      *  designID: string | number;
      *  products: Array<{
      *      sku: string;
@@ -191,14 +192,20 @@ module.exports = {
                 };
             }
 
-            const price = product.prices.find(price => {
+            const offer = product.prices.find(price => {
                 const min = selected.quantity >= price.min;
                 const max = price.max ? selected.quantity <= price.max : true;
 
                 return min && max && price.currency === data.currency;
             });
 
-            const subtotal = price ? selected.quantity * price.value : null;
+            if (!offer) {
+                return {
+                    sku: product.sku,
+                    message: "PRODUCT_PRICE_NOT_FOUND",
+                    error: true,
+                };
+            }
 
             if (selected.quantity > product.stock) {
                 return {
@@ -208,7 +215,9 @@ module.exports = {
                 };
             }
 
-            const total = subtotal + needlework;
+            const price = offer?.value ?? 0;
+            const subtotal = (price + needlework) * selected.quantity;
+            const total = subtotal;
 
             return {
                 id: product.id,
@@ -216,9 +225,9 @@ module.exports = {
                 title: product.title,
                 size: product.size,
                 quantity: selected.quantity,
-                currency: price.currency,
+                currency: offer.currency,
                 stock: product.stock,
-                price: price.value,
+                price: price,
                 needlework: needlework,
                 subtotal: subtotal,
                 total: total,
@@ -259,11 +268,11 @@ module.exports = {
      *
      * @typedef Cart
      * @type {object}
-     * @prop {string} designID
+     * @prop {string} design
      * @prop {{
-     *  upperLeftID?: number,
-     *  upperRightID?: number,
-     *  upperBackID?: number,
+     *  upperLeft?: number,
+     *  upperRight?: number,
+     *  upperBack?: number,
      * }} prints
      * @prop {Array<{
      *  id: string,
@@ -298,9 +307,11 @@ module.exports = {
                 /** @type {CartProduct} */
                 const payload = {
                     product: product.id,
-                    price: product.price,
-                    total: product.total,
                     quantity: product.quantity,
+                    price: product.price,
+                    needlework: product.needlework,
+                    subtotal: product.subtotal,
+                    total: product.total,
                     metadata: {
                         sku: product.sku,
                         stock: product.stock,
@@ -312,16 +323,11 @@ module.exports = {
                 return payload;
             });
 
-            const prints = _.mapKeys(
-                item.prints,
-                (_, key) => key.split("ID")[0]
-            );
-
             subtotal += total;
 
             return {
-                design: item.designID,
-                prints: prints,
+                design: item.design,
+                prints: item.prints,
                 products: products,
                 total: total,
             };
@@ -413,12 +419,14 @@ module.exports = {
         const charges = data.cart
             .flatMap(i => i.products)
             .map(product => {
+                const price = product.total / product.quantity || 1;
+
                 return {
                     id: product.sku,
                     title: product.title,
                     quantity: product.quantity,
                     currency_id: data.currency,
-                    unit_price: product.price,
+                    unit_price: price,
                 };
             });
 
@@ -443,7 +451,7 @@ module.exports = {
         const backURLs = {
             success: `${webURL}/orden/${data.id}`,
             pending: `${webURL}/orden/${data.id}`,
-            failure: `${webURL}/orden/error`,
+            failure: `${webURL}/orden/${data.id}`,
         };
 
         // SEND

@@ -3,6 +3,7 @@
 // @ts-check
 
 const Joi = require("joi");
+const _ = require("lodash");
 
 const { captureException } = require("@sentry/node");
 
@@ -58,8 +59,11 @@ module.exports = {
 
             for (const item of body.items) {
                 const resume = await service.createResumeByItem({
-                    ...item,
+                    id: item.id,
                     currency: body.currency,
+                    prints: item.prints,
+                    designID: item.designID,
+                    products: item.products,
                 });
 
                 if (resume.error === true) {
@@ -154,10 +158,15 @@ module.exports = {
             const cart = [];
 
             for (const item of body.cart) {
+                const prints = _.mapKeys(item.prints, (_, key) =>
+                    key.replace("ID", "")
+                );
+
                 const resume = await service.createResumeByItem({
                     id: item.id,
-                    designID: item.designID,
                     currency: body.currency,
+                    prints: prints,
+                    designID: item.designID,
                     products: item.products,
                 });
 
@@ -167,7 +176,7 @@ module.exports = {
 
                 cart.push({
                     design: item.designID,
-                    prints: item.prints,
+                    prints: prints,
                     products: resume.products,
                 });
             }

@@ -12,23 +12,33 @@
       "relation": "oneToOne",
       "target": "api::product.product"
     },
+    "quantity": {
+      "type": "integer",
+      "required": true,
+      "min": 1,
+      "default": 1
+    },
     "price": {
       "type": "float",
       "required": true,
       "default": 0,
       "min": 0
     },
+    "needlework": {
+      "type": "float",
+      "min": 0,
+      "default": 0
+    },
+    "subtotal": {
+      "type": "float",
+      "min": 0,
+      "default": 0
+    },
     "total": {
       "type": "float",
       "required": true,
       "default": 0,
       "min": 0
-    },
-    "quantity": {
-      "type": "integer",
-      "required": true,
-      "min": 1,
-      "default": 1
     },
     "metadata": {
       "type": "json",
