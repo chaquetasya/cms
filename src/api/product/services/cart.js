@@ -464,7 +464,7 @@ module.exports = {
             },
         });
 
-        if (res.id) {
+        if (res.data.id) {
             await strapi.entityService.update("api::order.order", data.id, {
                 data: {
                     paymentURL: res.data.init_point,

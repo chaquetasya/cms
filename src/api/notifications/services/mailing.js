@@ -31,7 +31,7 @@ module.exports = {
                     to: [{ email: data.to }],
                     sender: {
                         name: "Chaquetas Ya",
-                        email: process.env.MAILJET_EMAIL,
+                        email: process.env.SENDINBLUE_EMAIL,
                     },
 
                     htmlContent: data.html,
