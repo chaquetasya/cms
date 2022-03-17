@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_discounts_discount_rules",
+  "info": {
+    "displayName": "discountRule",
+    "icon": "wind"
+  },
+  "options": {},
+  "attributes": {
+    "variable": {
+      "type": "enumeration",
+      "enum": [
+        "QUANTITIES"
+      ]
+    },
+    "operator": {
+      "type": "enumeration",
+      "enum": [
+        "EQUAL",
+        "DIFFERENT",
+        "GREATER",
+        "SMALLER"
+      ]
+    },
+    "value": {
+      "type": "string"
+    }
+  }
+}
