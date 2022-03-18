@@ -26,20 +26,18 @@ module.exports = {
 
         const schemaResult = Joi.object({
             currency: currencySchema.required(),
-            items: Joi.array()
-                .min(1)
-                .items(
-                    Joi.object({
-                        id: Joi.string().required(),
-                        designID: Joi.number().required(),
-                        products: productsSchema,
-                        prints: Joi.object({
-                            upperLeft: Joi.string(),
-                            upperRight: Joi.string(),
-                            upperBack: Joi.string(),
-                        }),
-                    })
-                ),
+            items: Joi.array().items(
+                Joi.object({
+                    id: Joi.string().required(),
+                    designID: Joi.number().required(),
+                    products: productsSchema,
+                    prints: Joi.object({
+                        upperLeft: Joi.string(),
+                        upperRight: Joi.string(),
+                        upperBack: Joi.string(),
+                    }),
+                })
+            ),
         }).validate(body);
 
         if (schemaResult.error) {
@@ -59,7 +57,7 @@ module.exports = {
 
             const hasStock = await service.validateStock(body.items);
 
-            if (!hasStock) {
+            if (body.items?.length > 0 && !hasStock) {
                 ctx.status = 400;
                 ctx.body = {
                     message: "INSUFFICIENT_STOCK",
@@ -177,7 +175,7 @@ module.exports = {
 
             const hasStock = await service.validateStock(body.cart);
 
-            if (!hasStock) {
+            if (body.cart?.length > 0 && !hasStock) {
                 ctx.status = 400;
                 ctx.body = {
                     message: "INSUFFICIENT_STOCK",
