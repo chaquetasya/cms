@@ -26,18 +26,20 @@ module.exports = {
 
         const schemaResult = Joi.object({
             currency: currencySchema.required(),
-            items: Joi.array().items(
-                Joi.object({
-                    id: Joi.string().required(),
-                    designID: Joi.number().required(),
-                    products: productsSchema,
-                    prints: Joi.object({
-                        upperLeft: Joi.string(),
-                        upperRight: Joi.string(),
-                        upperBack: Joi.string(),
-                    }),
-                })
-            ),
+            items: Joi.array()
+                .min(1)
+                .items(
+                    Joi.object({
+                        id: Joi.string().required(),
+                        designID: Joi.number().required(),
+                        products: productsSchema,
+                        prints: Joi.object({
+                            upperLeft: Joi.string(),
+                            upperRight: Joi.string(),
+                            upperBack: Joi.string(),
+                        }),
+                    })
+                ),
         }).validate(body);
 
         if (schemaResult.error) {
@@ -54,6 +56,18 @@ module.exports = {
         try {
             const service = strapi.service("api::product.cart");
             const items = [];
+
+            const hasStock = await service.validateStock(body.items);
+
+            if (!hasStock) {
+                ctx.status = 400;
+                ctx.body = {
+                    message: "INSUFFICIENT_STOCK",
+                    error: true,
+                };
+
+                return;
+            }
 
             let subtotal = 0;
 
@@ -101,14 +115,18 @@ module.exports = {
         } catch (err) {
             captureException(err);
             console.error(err);
-            ctx.body = err;
+            ctx.body = {
+                message: "INTERNAL_SERVER_ERROR",
+                payload: err,
+                error: true,
+            };
         }
     },
 
     createOrder: async ctx => {
         const body = ctx.request.body;
 
-        // VALIDATE SCHEMA
+        // Validate schema
 
         const schemaResult = Joi.object({
             currency: currencySchema.required(),
@@ -156,6 +174,18 @@ module.exports = {
         try {
             const service = strapi.service("api::product.cart");
             const cart = [];
+
+            const hasStock = await service.validateStock(body.cart);
+
+            if (!hasStock) {
+                ctx.status = 400;
+                ctx.body = {
+                    message: "INSUFFICIENT_STOCK",
+                    error: true,
+                };
+
+                return;
+            }
 
             for (const item of body.cart) {
                 const prints = _.mapKeys(item.prints, (_, key) =>
