@@ -334,9 +334,9 @@ module.exports = {
         });
 
         const shipment = {
-            firstname: data.shipment.firstname,
-            lastname: data.shipment.lastname,
-            email: data.shipment.email,
+            firstname: data.shipment.firstname?.trim(),
+            lastname: data.shipment.lastname?.trim(),
+            email: data.shipment.email?.trim(),
             phone: data.shipment.phone,
             country: data.shipment.country,
             city: data.shipment.city,
