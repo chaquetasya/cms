@@ -385,9 +385,9 @@ module.exports = {
         const mailing = strapi.service("api::notifications.mailing");
 
         await mailing.sendOrderCreated({
-            id: order.id,
-            firstname: order.shipment?.firstname ?? "",
-            email: order.shipment.email,
+            to: order.shipment.email,
+            order: order,
+            user: order.shipment,
         });
 
         return order;
