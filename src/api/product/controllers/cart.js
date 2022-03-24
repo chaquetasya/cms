@@ -56,6 +56,7 @@ module.exports = {
             const items = [];
 
             let subtotal = 0;
+            let discount = 0;
 
             for (const item of body.items) {
                 const resume = await service.createResumeByItem({
@@ -76,6 +77,7 @@ module.exports = {
                 }
 
                 subtotal += resume.total;
+                discount += resume.discount;
 
                 items.push({
                     ...resume,
@@ -94,6 +96,7 @@ module.exports = {
                 items: items,
                 shipping: shipping,
                 subtotal: subtotal,
+                discount: discount,
                 total: subtotal + shipping,
             };
 

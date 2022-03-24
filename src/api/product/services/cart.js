@@ -99,15 +99,14 @@ module.exports = {
      * }} data
      */
     calculateNeedlework(data) {
-        return _.reduce(
-            data.prints,
+        let needlework = 0;
 
-            (acc, value, key) => {
-                return Boolean(value) ? acc + data.prices[key] : acc;
-            },
+        for (const key in data.prints) {
+            const value = data.prices[key];
+            needlework += value ? needlework : 0;
+        }
 
-            0
-        );
+        return needlework;
     },
 
     /**
@@ -181,6 +180,9 @@ module.exports = {
 
         // PRICES
 
+        let generalSubtotal = 0;
+        let generalTotal = 0;
+
         const offers = products.map(product => {
             const selected = data.products.find(i => i.sku === product.sku);
 
@@ -219,6 +221,9 @@ module.exports = {
             const subtotal = (price + needlework) * selected.quantity;
             const total = subtotal;
 
+            generalSubtotal += subtotal;
+            generalTotal += total;
+
             return {
                 id: product.id,
                 sku: product.sku,
@@ -234,18 +239,14 @@ module.exports = {
             };
         });
 
-        let total = 0;
-
-        for (const price of offers) {
-            total += price.total;
-        }
-
         return {
             id: data.id,
             design: design,
             currency: data.currency,
             products: offers,
-            total: total,
+            discount: 0,
+            subtotal: generalSubtotal,
+            total: generalTotal,
         };
     },
 

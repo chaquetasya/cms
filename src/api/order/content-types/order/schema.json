@@ -26,6 +26,12 @@
       "required": true,
       "default": 0
     },
+    "discounts": {
+      "type": "float",
+      "max": 0,
+      "required": true,
+      "default": 0
+    },
     "shipping": {
       "type": "float",
       "min": 0,

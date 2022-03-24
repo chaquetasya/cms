@@ -16,12 +16,24 @@
       "type": "string",
       "required": true
     },
+    "to": {
+      "type": "enumeration",
+      "enum": [
+        "SUBTOTAL"
+      ],
+      "default": "SUBTOTAL",
+      "required": true
+    },
     "rules": {
       "type": "component",
       "repeatable": true,
-      "component": "discounts.discount-rule",
+      "component": "discounts.discount-rule"
+    },
+    "percentage": {
+      "type": "decimal",
       "required": true,
-      "min": 1
+      "min": 0,
+      "default": 0
     }
   }
 }
