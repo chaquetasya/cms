@@ -24,6 +24,12 @@
       "default": "SUBTOTAL",
       "required": true
     },
+    "currency": {
+      "type": "enumeration",
+      "enum": [
+        "COP"
+      ]
+    },
     "rules": {
       "type": "component",
       "repeatable": true,

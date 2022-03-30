@@ -17,10 +17,12 @@
     "operator": {
       "type": "enumeration",
       "enum": [
-        "EQUAL",
-        "DIFFERENT",
-        "GREATER",
-        "SMALLER"
+        "==",
+        "!=",
+        ">",
+        "<",
+        ">=",
+        "<="
       ],
       "required": true,
       "default": "EQUAL"
