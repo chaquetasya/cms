@@ -10,8 +10,11 @@ const {
     createPreference,
 } = require("../services/cart");
 
+const {
+    findDiscountAmountByResume,
+} = require("../../discount/services/discount");
+
 const { captureException } = require("@sentry/node");
-const { calculateDiscount } = require("../../discount/services/discount");
 
 const currencySchema = Joi.string().valid("COP", "USD");
 
@@ -99,7 +102,7 @@ async function handleCalculateTotal(ctx) {
             .sum()
             .value();
 
-        const discount = await calculateDiscount({
+        const discount = await findDiscountAmountByResume({
             currency: body.currency,
             subtotal: subtotal,
             quantities: quantities,
@@ -226,6 +229,7 @@ async function handleCreateOrder(ctx) {
             cart: cart,
             shipment: body.shipment,
             shipping: doc.shipping,
+            discounts: doc.discounts,
         });
 
         if (!preference) {

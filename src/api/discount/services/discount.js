@@ -68,7 +68,7 @@ async function findDiscountByResume(data) {
 }
 
 /**
- *
+ * @param {Discount} discount
  * @param {{
  *  currency: "COP",
  *  subtotal: number,
@@ -76,9 +76,7 @@ async function findDiscountByResume(data) {
  * }} data
  * @returns {Promise<number>} Amount of discount
  */
-async function calculateDiscount(data) {
-    const discount = await findDiscountByResume(data);
-
+function calculateDiscountAmount(discount, data) {
     if (!discount) return 0;
 
     switch (discount.to) {
@@ -91,7 +89,22 @@ async function calculateDiscount(data) {
     }
 }
 
+/**
+ *
+ * @param {{
+ *  currency: "COP",
+ *  subtotal: number,
+ *  quantities: number,
+ * }} data
+ * @returns {Promise<number>} Amount of discount
+ */
+async function findDiscountAmountByResume(data) {
+    const discount = await findDiscountByResume(data);
+    return calculateDiscountAmount(discount, data);
+}
+
 module.exports = {
     findDiscountByResume,
-    calculateDiscount,
+    findDiscountAmountByResume,
+    calculateDiscountAmount,
 };

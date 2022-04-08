@@ -2,7 +2,10 @@
 
 const axios = require("axios");
 const _ = require("lodash");
-const { findDiscountByResume } = require("../../discount/services/discount");
+const {
+    findDiscountByResume,
+    calculateDiscountAmount,
+} = require("../../discount/services/discount");
 
 /**
  *
@@ -353,11 +356,19 @@ async function createOrder(data) {
         .sum()
         .value();
 
-    const discount = await findDiscountByResume({
+    const appliedDiscount = await findDiscountByResume({
         currency: data.currency,
         subtotal: subtotal,
         quantities: quantities,
     });
+
+    const discounts = calculateDiscountAmount(appliedDiscount, {
+        currency: data.currency,
+        subtotal: subtotal,
+        quantities: quantities,
+    });
+
+    const total = subtotal + shipping - discounts;
 
     const order = await strapi.entityService.create("api::order.order", {
         populate: "*",
@@ -366,12 +377,13 @@ async function createOrder(data) {
             currency: data.currency,
             subtotal: subtotal,
             shipping: shipping,
-            total: subtotal + shipping,
+            discounts: discounts,
+            total: total,
             status: "PENDING",
             cart: carts,
             shipment: shipment,
             metadata: {
-                discount,
+                discount: appliedDiscount,
             },
         },
     });
@@ -420,11 +432,11 @@ async function createOrder(data) {
  * @prop {Array<Cart>} cart
  * @prop {Shipment} shipment
  * @prop {number} shipping
+ * @prop {number} [discounts]
  */
 
 /**
  * @param {CreatePreferenceInput} data
- *
  * @returns {Promise<Preference>}
  */
 async function createPreference(data) {
@@ -450,6 +462,16 @@ async function createPreference(data) {
         unit_price: data.shipping,
     });
 
+    if (data.discounts > 0) {
+        charges.push({
+            id: "discount",
+            title: "Descuento",
+            quantity: 1,
+            currency_id: data.currency,
+            unit_price: -data.discounts,
+        });
+    }
+
     const payer = {
         name: data.shipment.firstname,
         surname: data.shipment.lastname,
@@ -473,9 +495,7 @@ async function createPreference(data) {
     const res = await axios({
         method: "POST",
         url: "https://api.mercadopago.com/checkout/preferences",
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
         data: {
             items: charges,
             payer: payer,
