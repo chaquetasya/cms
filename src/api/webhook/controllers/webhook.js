@@ -66,9 +66,9 @@ module.exports = {
                         // SEND EMAIL
 
                         await mailing.sendOrderConfirmed({
-                            id: order.id,
-                            firstname: order.shipment?.firstname,
-                            email: order.shipment?.email,
+                            to: order.shipment.email,
+                            order: order,
+                            user: order.shipment,
                         });
                     }
 

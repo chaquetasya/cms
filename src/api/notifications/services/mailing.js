@@ -1,7 +1,9 @@
 "use strict";
 
 const { addBreadcrumb, captureException } = require("@sentry/node");
+
 const axios = require("axios");
+const _ = require("lodash");
 
 // @ts-check
 
@@ -15,10 +17,13 @@ module.exports = {
      * @param {{
      *  to: string,
      *  subject: string,
-     *  html: string
+     *  templateID: string,
+     *  templateData: {
+     *      [key: string]: string
+     *  }
      * }} data Mailing data
      */
-    async sendBasicEmail(data) {
+    async sendTemplateEmail(data) {
         try {
             const res = await axios({
                 method: "POST",
@@ -34,7 +39,8 @@ module.exports = {
                         email: process.env.SENDINBLUE_EMAIL,
                     },
 
-                    htmlContent: data.html,
+                    templateId: Number(data.templateID),
+                    params: data.templateData,
                 },
             });
 
@@ -52,12 +58,21 @@ module.exports = {
     /**
      *
      * @param {{
-     *  id: string,
-     *  firstname: string,
-     *  email: string,
+     *  to: string,
+     *
+     *  order: {
+     *      id: string,
+     *  },
+     *
+     *  user: {
+     *      firstname: string,
+     *      lastname: string,
+     *      email: string
+     *  },
      * }} data
      */
     async sendOrderCreated(data) {
+        const templateID = process.env.SENDINBLUE_EMAIL_ORDER_CREATED_ID;
         const webURL = process.env.APP_URL;
 
         addBreadcrumb({
@@ -65,35 +80,45 @@ module.exports = {
             category: "mailing",
             level: "info",
             data: {
-                id: data.id,
-                firstname: data.firstname,
-                email: data.email,
+                id: data.order.id,
+                to: data.user.email,
             },
         });
 
-        this.sendBasicEmail({
-            to: data.email,
-            subject: "Tu orden ha sido creada",
-            html: `
-                <h1>¡Hola, ${data.firstname}!</h1>
-                <p>
-                    Tu orden ha sido creada correctamente y puedes darle seguimiento a tu orden en <a href="${webURL}/orden/${data.id}">nuestra plataforma</a>.
-                </p>
-                <br />
-                <b>Chaquetas Ya</b>
-            `,
+        const firstname = _.capitalize(data.user.firstname?.trim());
+        const lastname = data.user.lastname?.trim();
+        const orderURL = `${webURL}/orden/${data.order.id}`;
+
+        this.sendTemplateEmail({
+            to: data.to,
+            subject: "Sobre tu orden",
+            templateID: templateID,
+            templateData: {
+                firstname,
+                lastname,
+                orderURL,
+            },
         });
     },
 
     /**
      *
      * @param {{
-     *  id: string,
-     *  firstname: string,
-     *  email: string,
+     *  to: string,
+     *
+     *  order: {
+     *      id: string,
+     *  },
+     *
+     *  user: {
+     *      firstname: string,
+     *      lastname: string,
+     *      email: string
+     *  },
      * }} data
      */
     async sendOrderConfirmed(data) {
+        const templateID = process.env.SENDINBLUE_EMAIL_ORDER_CONFIRMED_ID;
         const webURL = process.env.APP_URL;
 
         addBreadcrumb({
@@ -101,23 +126,24 @@ module.exports = {
             category: "mailing",
             level: "info",
             data: {
-                id: data.id,
-                firstname: data.firstname,
-                email: data.email,
+                id: data.order.id,
+                to: data.user.email,
             },
         });
 
-        this.sendBasicEmail({
+        const firstname = _.capitalize(data.user.firstname?.trim());
+        const lastname = data.user.lastname?.trim();
+        const orderURL = `${webURL}/orden/${data.order.id}`;
+
+        this.sendTemplateEmail({
             to: data.email,
-            subject: "Tu orden ha sido confirmada",
-            html: `
-                <h1>¡Hola, ${data.firstname}!</h1>
-                <p>
-                    El pago de tu orden ha sido confirmada, puedes darle seguimiento a tu orden en <a href="${webURL}/orden/${data.id}">nuestra plataforma</a>.
-                </p>
-                <br />
-                <b>Chaquetas Ya</b>
-            `,
+            subject: "Sobre tu orden",
+            templateID: templateID,
+            templateData: {
+                firstname,
+                lastname,
+                orderURL,
+            },
         });
     },
 };

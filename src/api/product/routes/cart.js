@@ -3,7 +3,7 @@ module.exports = {
         {
             method: "POST",
             path: "/cart/totalize",
-            handler: "cart.calculateTotal",
+            handler: "cart.handleCalculateTotal",
             config: {
                 auth: false,
             },
@@ -12,7 +12,7 @@ module.exports = {
         {
             method: "POST",
             path: "/cart",
-            handler: "cart.createOrder",
+            handler: "cart.handleCreateOrder",
             config: {
                 auth: false,
             },

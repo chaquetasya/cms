@@ -1,0 +1,37 @@
+{
+  "collectionName": "components_discounts_discount_rules",
+  "info": {
+    "displayName": "discountRule",
+    "icon": "wind",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "variable": {
+      "type": "enumeration",
+      "enum": [
+        "QUANTITIES"
+      ],
+      "required": true
+    },
+    "operator": {
+      "type": "enumeration",
+      "enum": [
+        "==",
+        "!=",
+        ">",
+        "<",
+        ">=",
+        "<="
+      ],
+      "required": true,
+      "default": "EQUAL"
+    },
+    "value": {
+      "type": "float",
+      "max": 100,
+      "min": 1,
+      "required": true
+    }
+  }
+}

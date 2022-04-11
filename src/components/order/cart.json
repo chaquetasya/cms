@@ -1,7 +1,7 @@
 {
   "collectionName": "components_order_carts",
   "info": {
-    "displayName": "cart",
+    "displayName": "cartOrder",
     "icon": "cash-register",
     "description": ""
   },

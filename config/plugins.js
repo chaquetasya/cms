@@ -16,5 +16,12 @@ module.exports = ({ env }) => {
                 return breadcrumb;
             },
         },
+
+        "upload-plugin-cache": {
+            enabled: true,
+            config: {
+                maxAge: 86400000,
+            },
+        },
     };
 };

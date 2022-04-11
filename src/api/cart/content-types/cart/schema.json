@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "carts",
+  "info": {
+    "singularName": "cart",
+    "pluralName": "carts",
+    "displayName": "Cart",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "uid": {
+      "type": "uid",
+      "required": true
+    },
+    "design": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::design.design"
+    },
+    "prints": {
+      "type": "component",
+      "repeatable": false,
+      "component": "order.print"
+    },
+    "products": {
+      "displayName": "cartProduct",
+      "type": "component",
+      "repeatable": true,
+      "component": "cart.cart-product",
+      "required": true,
+      "min": 1
+    }
+  }
+}

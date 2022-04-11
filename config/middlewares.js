@@ -1,11 +1,23 @@
 module.exports = [
     "strapi::errors",
     "strapi::security",
-    "strapi::cors",
     "strapi::logger",
     "strapi::query",
     "strapi::favicon",
     "strapi::public",
+    "strapi::cors",
+
+    {
+        name: "strapi::cors",
+        config: {
+            origin: [
+                "https://api.mercadopago.com",
+                "https://mercadopago.com",
+                process.env.URL,
+                process.env.APP_URL,
+            ],
+        },
+    },
 
     {
         name: "strapi::body",
@@ -14,7 +26,7 @@ module.exports = [
             jsonLimit: "10MB",
             textLimit: "10MB",
             formidable: {
-                maxFileSize: 8 * 1024 * 1024,
+                maxFileSize: 1024 * 1024 * 10, // 10MB
             },
         },
     },

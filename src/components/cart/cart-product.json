@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_cart_cart_products",
+  "info": {
+    "displayName": "cartProduct",
+    "icon": "dolly-flatbed"
+  },
+  "options": {},
+  "attributes": {
+    "sku": {
+      "type": "string",
+      "required": true
+    },
+    "quantity": {
+      "type": "integer"
+    }
+  }
+}

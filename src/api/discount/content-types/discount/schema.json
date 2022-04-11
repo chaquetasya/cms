@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "discounts",
+  "info": {
+    "singularName": "discount",
+    "pluralName": "discounts",
+    "displayName": "Discount",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "to": {
+      "type": "enumeration",
+      "enum": [
+        "SUBTOTAL"
+      ],
+      "default": "SUBTOTAL",
+      "required": true
+    },
+    "currency": {
+      "type": "enumeration",
+      "enum": [
+        "COP"
+      ]
+    },
+    "rules": {
+      "type": "component",
+      "repeatable": true,
+      "component": "discounts.discount-rule"
+    },
+    "percentage": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "default": 0
+    }
+  }
+}
