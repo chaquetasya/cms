@@ -8,18 +8,6 @@ module.exports = [
     "strapi::cors",
 
     {
-        name: "strapi::cors",
-        config: {
-            origin: [
-                "https://api.mercadopago.com",
-                "https://mercadopago.com",
-                process.env.URL,
-                process.env.APP_URL,
-            ],
-        },
-    },
-
-    {
         name: "strapi::body",
         config: {
             formLimit: "10MB",
