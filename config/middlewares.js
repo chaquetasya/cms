@@ -4,6 +4,7 @@ module.exports = [
     "strapi::logger",
     "strapi::query",
     "strapi::favicon",
+    "global::uploads-cache",
     "strapi::public",
     "strapi::cors",
 
