@@ -6,7 +6,9 @@
 
 module.exports = (config, { strapi }) => {
     return async (ctx, next) => {
-        if (ctx.method === "GET" && ctx.url.startsWith("/upload")) {
+        const regex = /^\/uploads\/.+\.(webp|png|jpe?g|gif|pdf)/;
+
+        if (ctx.method === "GET" && ctx.url.match(regex)) {
             strapi.log.info("Setting cache headers for uploads");
             ctx.set("Cache-Control", "must-revalidate, public, max-age=86400");
         }
