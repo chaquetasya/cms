@@ -10,15 +10,15 @@
         "strapi": "strapi"
     },
     "dependencies": {
-        "@sentry/node": "^6.18.2",
-        "@strapi/plugin-i18n": "^4.1.5",
-        "@strapi/plugin-sentry": "^4.1.5",
-        "@strapi/plugin-users-permissions": "^4.1.5",
-        "@strapi/strapi": "^4.1.5",
+        "@sentry/node": "^6.19.7",
+        "@strapi/plugin-i18n": "^4.1.12",
+        "@strapi/plugin-sentry": "^4.1.12",
+        "@strapi/plugin-users-permissions": "^4.1.12",
+        "@strapi/strapi": "^4.1.12",
         "axios": "^0.26.1",
         "joi": "^17.6.0",
         "mysql": "^2.18.1",
-        "nanoid": "^3.3.1"
+        "nanoid": "^3.3.4"
     },
     "author": {
         "name": "Andres Celis"
@@ -32,7 +32,6 @@
     },
     "license": "MIT",
     "devDependencies": {
-        "prettier": "^2.5.1",
-        "typescript": "^4.5.4"
+        "typescript": "^4.7.3"
     }
 }
